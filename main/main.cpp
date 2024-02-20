@@ -34,7 +34,6 @@
 #include "device_data.h"
 #include "config.h"
 #include "wifi.h"
-#include "interface/socket_server.h"
 #include "uart.h"
 #include "tasks.h"
 #include "common_protocol/include/common_protocol.h"

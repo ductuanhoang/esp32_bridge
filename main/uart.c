@@ -8,7 +8,6 @@
 
 #include "uart.h"
 #include "config.h"
-#include "interface/socket_server.h"
 #include "tasks.h"
 
 #include <freertos/event_groups.h>
