@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC Company - Welcome to Service Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Center align headings */
+        }
+        .form-container {
+            text-align: left; /* Align form elements to the left */
+        }
+        h1, h2 {
+            margin-top: 0; /* Remove default margin */
+        }
+        input[type="text"],
+        input[type="password"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ABC Company</h1>
+        <h2>Welcome to Service Portal</h2>
+        <div class="form-container">
+            <form id="loginForm" onsubmit="submitForm(event)">
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" placeholder="Enter your email" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <button type="submit">Sign in</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Fetch email and password values from the form
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            // Here, you would typically send this data to your backend for validation
+            // For demonstration purposes, let's assume the validation is successful
+            var isValid = validateUser(email, password);
+            window.location.href = "main.html";
+            // if (isValid) {
+            //     // Redirect to main.html
+            //     window.location.href = "main.html";
+            // } else {
+            //     // Show error message
+            //     alert("Incorrect email or password. Please try again.");
+            // }
+        }
+
+        function validateUser(email, password) {
+            // Here, you would make an API call to your backend to validate the user credentials
+            // For demonstration purposes, let's assume the validation is successful
+            // In a real application, you would perform actual validation logic
+            return false; // For demonstration, always return false
+        }
+    </script>
+</body>
+</html>

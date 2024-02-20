@@ -1,0 +1,174 @@
+/* General Background */
+body {
+    position: relative;
+    width: 1440px;
+    height: 889px;
+    background: #F8F7FA;
+}
+
+/* Container for content */
+.container {
+    position: absolute;
+    width: 1128px;
+    height: 781px;
+    left: 286px;
+    top: 0;
+}
+
+/* Navbar styling */
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 12px 24px;
+    gap: 10px;
+    position: absolute;
+    width: 1128px;
+    height: 62px;
+    left: 0;
+    top: 16px;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 4px rgba(165, 163, 174, 0.3);
+    border-radius: 6px;
+}
+
+/* Search bar styling */
+.search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 33px;
+    gap: 10px;
+    width: 1080px;
+    height: 38px;
+}
+
+/* Footer styling */
+.footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 12px 0;
+    gap: 10px;
+    position: absolute;
+    width: 1128px;
+    height: 48px;
+    left: 0;
+    top: 841px;
+    border-radius: 6px;
+}
+
+/* Main content frame styling */
+.frame {
+    position: absolute;
+    width: 1126px;
+    height: 683px;
+    left: 287px;
+    top: 98px;
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #FFFFFF;
+    border-radius: 6px;
+}
+
+/* Nav tabs styling */
+.nav-tabs {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    position: absolute;
+    width: 1126px;
+    height: 47px;
+    left: 0;
+    top: 0;
+    background: #FFFFFF;
+    border-bottom: 1px solid #DBDADE;
+    border-radius: 6px 6px 0px 0px;
+}
+
+/* Style for .nav-tabs if it should appear like a button */
+.nav-tabs {
+    display: flex;
+    justify-content: none;
+    /* Adjust as needed */
+    background: #FFFFFF;
+    /* Adjust as needed */
+    border: 1px solid #DBDADE;
+    /* Adjust as needed */
+    border-radius: 6px;
+    /* Adjust as needed */
+    margin-bottom: 20px;
+    /* Adjust as needed */
+}
+
+/* Nav item styling */
+.nav-item {
+    background: none;
+    border: none;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent; /* Default state */
+    outline: none;
+}
+
+.nav-item.active {
+    border-bottom-color: #112F64; /* Active state indicator */
+    color: #112F64;
+    /* Active state indicator */
+}
+
+/* Text styling */
+.text {
+    font-family: 'Public Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 22px;
+    color: #4B465C;
+    display: flex;
+    align-items: center;
+}
+
+/* Menu/Admin styling */
+.menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0 10px;
+    gap: 5px;
+    position: absolute;
+    width: 260px;
+    height: 889px;
+    left: 0;
+    top: 0;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 4px rgba(165, 163, 174, 0.3);
+}
+
+/* Logo styling */
+.logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px 14px 20px 18px;
+    gap: 10px;
+    width: 260px;
+    height: 88px;
+    background-image: url('path_to_your_logo.png');
+    /* Replace with the actual path to your logo */
+    background-repeat: no-repeat;
+}
+
+/* Settings icon styling */
+.settings-icon {
+    width: 22px;
+    height: 22px;
+    background-image: url('path_to_your_settings_icon.png');
+    /* Replace with the actual path */
+    background-repeat: no-repeat;
+}
+
+/* Additional styles */
+/* Add any additional styles you might need here */

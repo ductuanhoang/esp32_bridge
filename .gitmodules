@@ -1,0 +1,6 @@
+[submodule "components/button"]
+	path = components/button
+	url = https://github.com/nebkat/esp32-button.git
+[submodule "components/ArduinoJson"]
+	path = components/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson

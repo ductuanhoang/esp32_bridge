@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Admin</title>
+    <link rel="stylesheet" href="main.css"> <!-- Make sure the path to your CSS file is correct -->
+</head>
+<body>
+    <div class="menu">
+        <!-- Logo and company name go here -->
+        <div class="logo">
+            <img src="path_to_logo.png" alt="ABC Company Logo"> <!-- Replace with your logo path -->
+            <span>ABC Company</span>
+        </div>
+        <ul>
+            <button class="nav-item active">Dashboard</button>
+            <button class="nav-item">Settings</button>
+        </ul>
+    </div>
+    <div class="container">
+        <header class="navbar">
+            <!-- Search bar goes here -->
+            <div class="search">
+                <input type="text" placeholder="Search (Ctrl+/)">
+            </div>
+        </header>
+        <main class="main-content">
+            <!-- Content and tabs go here -->
+            <div class="nav-tabs">
+                <button class="nav-item active">Serial</button>
+                <button class="nav-item">UDP</button>
+                <button class="nav-item">TCP</button>
+                <button class="nav-item">BLT</button>
+            </div>
+            <!-- Replace 'data-display' with the appropriate class or remove if not needed -->
+            <textarea class="data-display" readonly>
+                <!-- Your data goes here -->
+            </textarea>
+        </main>
+        <footer class="footer">
+            © 2023, made by ABC Company
+        </footer>
+    </div>
+</body>
+</html>

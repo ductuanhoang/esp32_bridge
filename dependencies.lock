@@ -1,0 +1,21 @@
+dependencies:
+  espressif/cmake_utilities:
+    component_hash: 351350613ceafba240b761b4ea991e0f231ac7a9f59a9ee901f751bddc0bb18f
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 0.5.3
+  espressif/esp_websocket_client:
+    component_hash: d8ccaffac2871dc756bdc08d7ff0bfa2daa7db3d94b0c7bf714b1962efe5e7c9
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 1.2.2
+  idf:
+    component_hash: null
+    source:
+      type: idf
+    version: 5.1.0
+manifest_hash: 8ca349178a5984ba4ff041a2ce9fb0a6c29228f273489ea464ec19db71d69978
+target: esp32c6
+version: 1.0.0

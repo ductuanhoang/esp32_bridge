@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ABC Company</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-R9dJ5HtCxOZvJLSGyxVLM8ZilXObFz+jfGwRouIz+9XXUkJ2M0B/7SF+daeqJ7MWugF3t1TKlfU08+o8nl8KGw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        .left-panel {
+            flex: 0 0 25%;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+        .right-panel {
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #555;
+            color: #fff;
+        }
+        button:hover, .selected {
+            background-color: #007bff;
+            color: white;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .search-bar {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .search-bar input {
+            width: calc(100% - 30px);
+            padding: 10px 30px 10px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .search-bar i {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            color: #555;
+        }
+        .menu-bar {
+            display: flex;
+        }
+        .menu-bar button {
+            margin-right: 10px;
+        }
+        .debug-message {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <h1>ABC Company</h1>
+            <button id="dashboard">Dashboard</button>
+            <button id="settings">Settings</button>
+        </div>
+        <div class="right-panel">
+            <h1>Select Protocol</h1>
+            <div class="search-bar">
+                <input type="text" id="protocolSearch" onkeyup="filterProtocols()" placeholder="Search protocols...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="menu-bar">
+                <button>Serial</button>
+                <button>UDP</button>
+                <button>TCP</button>
+                <button>Bluetooth</button>
+            </div>
+            <div class="debug-message" id="debugMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("dashboard").onclick = function() { navigateToDashboard(); };
+            document.getElementById("settings").onclick = function() { navigateToSettings(); };
+
+            var buttons = document.querySelectorAll(".menu-bar button");
+            buttons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    printDebugMessage.call(this, this.textContent.trim());
+                });
+            });
+        });
+
+        function navigateToDashboard() {
+            window.location.href = "main.html";
+        }
+
+        function navigateToSettings() {
+            window.location.href = "settings.html";
+        }
+
+        function printDebugMessage(protocol) {
+            var debugMessage = "Selected protocol: " + protocol;
+            document.getElementById("debugMessage").innerText = debugMessage;
+            
+            var buttons = document.querySelectorAll(".menu-bar button");
+            buttons.forEach(function(button) {
+                button.classList.remove("selected");
+            });
+            
+            this.classList.add("selected");
+        }
+
+        function filterProtocols() {
+            var input, filter, menuBar, buttons, i;
+            input = document.getElementById("protocolSearch");
+            filter = input.value.toUpperCase();
+            menuBar = document.querySelector(".menu-bar");
+            buttons = menuBar.getElementsByTagName("button");
+            for (i = 0; i < buttons.length; i++) {
+                if (buttons[i].innerText.toUpperCase().indexOf(filter) > -1) {
+                    buttons[i].style.display = "";
+                } else {
+                    buttons[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
