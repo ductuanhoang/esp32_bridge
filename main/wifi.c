@@ -28,7 +28,7 @@
 #include <sys/param.h>
 #include <tasks.h>
 #include <uart.h>
-// #include <status_led.h>
+
 #include <retry.h>
 #include <freertos/event_groups.h>
 #include <esp_netif_ip_addr.h>
@@ -181,11 +181,11 @@ static void handle_ap_start(void *esp_netif, esp_event_base_t base, int32_t even
     ESP_LOGI(TAG, "WIFI_EVENT_AP_START");
 
     // IP forwarding/NATP
-    if (config_get_bool1(CONF_ITEM(KEY_CONFIG_WIFI_STA_AP_FORWARD))) {
-        esp_netif_ip_info_t ip_info_ap;
-        esp_netif_get_ip_info(esp_netif_ap, &ip_info_ap);
-        ip_napt_enable(ip_info_ap.ip.addr, 1);
-    }
+    // if (config_get_bool1(CONF_ITEM(KEY_CONFIG_WIFI_STA_AP_FORWARD))) {
+    //     esp_netif_ip_info_t ip_info_ap;
+    //     esp_netif_get_ip_info(esp_netif_ap, &ip_info_ap);
+    //     ip_napt_enable(ip_info_ap.ip.addr, 1);
+    // }
 
     ap_active = true;
 }
@@ -376,7 +376,7 @@ void wifi_init() {
             // Generate a default AP SSID based on MAC address and store
             uint8_t mac[6];
             esp_wifi_get_mac(WIFI_IF_AP, mac);
-            snprintf((char *) config_ap.ap.ssid, sizeof(config_ap.ap.ssid), "ESP_XBee_%02X%02X%02X",
+            snprintf((char *) config_ap.ap.ssid, sizeof(config_ap.ap.ssid), "ESP_BRIDGE%02X%02X%02X",
                     mac[3], mac[4], mac[5]);
             config_ap.ap.ssid_len = strlen((char *) config_ap.ap.ssid);
 

@@ -58,7 +58,6 @@
 #include <freertos/task.h>
 #include <uart.h>
 #include <util.h>
-#include <status_led.h>
 #include <wifi.h>
 #include <esp_log.h>
 #include <sys/socket.h>
