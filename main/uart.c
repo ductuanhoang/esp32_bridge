@@ -52,7 +52,7 @@ static void uart_task(void *ctx);
 
 void uart_init()
 {
-    uart_number0_init();
+    // uart_number0_init();
     uart_number1_init();
     stream_stats = stream_stats_new("uart");
 
@@ -67,7 +67,7 @@ static void uart_number0_init(void)
 {
     const uart_port_t uart_num = UART_NUM_0;
     uart_config_t uart0_config = {
-        .baud_rate = 57600,
+        .baud_rate = 115200,
         .data_bits = UART_DATA_8_BITS,
         .parity = UART_PARITY_DISABLE,
         .stop_bits = UART_STOP_BITS_1,
@@ -116,7 +116,7 @@ static void uart_number1_init(void)
     }
 
     uart_config_t uart_config = {
-        .baud_rate = 9600,
+        .baud_rate = 115200,
         .data_bits = UART_DATA_8_BITS,
         .parity = UART_PARITY_DISABLE,
         .stop_bits = UART_STOP_BITS_1,

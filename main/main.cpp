@@ -80,7 +80,7 @@ static void show_config_board(void)
 {
     ESP_LOGI(TAG, "-------Show configuration------");
     ESP_LOGI(TAG, "board_data.input = %d", board_data.input);
-    ESP_LOGI(TAG, "board_data.input = %d", board_data.output);
+    ESP_LOGI(TAG, "board_data.output = %d", board_data.output);
 
     ESP_LOGI(TAG, "----------------------------------------------------------------");
 }

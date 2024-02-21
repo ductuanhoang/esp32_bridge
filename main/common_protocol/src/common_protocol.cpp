@@ -151,41 +151,47 @@ void common_protocol_init(void)
     // check input config uart file
     if (board_data.input == E_SERIAL_UART)
     {
-        ESP_LOGI(TAG, "config with E_SERIAL_UART");
+        ESP_LOGI(TAG, "config input with E_SERIAL_UART");
         uart_register_read_handler(common_uart_handler);
     }
     else if (board_data.input == E_BLUETOOTH)
     {
+        ESP_LOGI(TAG, "config input with E_BLUETOOTH");
     }
     else if (board_data.input == E_UDP)
     {
-        // ESP_LOGI(TAG, "config with udp");
-        //  config udp
+        ESP_LOGI(TAG, "config input with E_UDP");
         wait_for_ip();
     }
     else if (board_data.input == E_TCP)
     {
+        ESP_LOGI(TAG, "config input with E_TCP");
+        wait_for_ip();
     }
     else if (board_data.input == E_CAN_BUS)
     {
+        ESP_LOGI(TAG, "config input with input");
     }
 
     // check output
     if (board_data.output == E_SERIAL_UART)
     {
-        // uart format
+        ESP_LOGI(TAG, "config output with E_SERIAL_UART");
         protocol_connection.send_u8 = common_uart_send;
     }
     if (board_data.output == E_BLUETOOTH)
     {
+        ESP_LOGI(TAG, "config output with E_BLUETOOTH");
         // send via BLUETOOTH
     }
     if (board_data.output == E_CAN_BUS)
     {
+        ESP_LOGI(TAG, "config output with E_CAN_BUS");
         // send via can bus
     }
     else if (board_data.output == E_UDP)
     {
+        ESP_LOGI(TAG, "config output with E_UDP");
         wait_for_ip();
         web_socket_client_init();
         // json format
@@ -194,6 +200,7 @@ void common_protocol_init(void)
     }
     else if (board_data.output == E_TCP)
     {
+        ESP_LOGI(TAG, "config output with E_TCP");
         wait_for_ip();
         web_socket_client_init();
         // json format
@@ -220,18 +227,19 @@ static void common_uart_handler(void *handler_args, esp_event_base_t base, int32
     stream_stats_increment(common_stream_stats, 0, length);
     if (board_data.input == E_SERIAL_UART)
     {
+        ESP_LOGI(TAG, "recieved with len = %ld", length);
         // int ret = device_manager_check_package((const char *)buffer, length);
         // if (ret == 0)
-        // {
-        //     // ESP_LOG_BUFFER_HEXDUMP(TAG, (const char *)buffer, length, ESP_LOG_INFO);
-        //     user_buffer_common_queue.len = length;
-        //     for (size_t i = 0; i < length; i++)
-        //     {
-        //         user_buffer_common_queue.buffer[i] = ((uint8_t *)buffer)[i];
-        //     }
-        //     xQueueSend(common_queue, (void *)(&user_buffer_common_queue), (TickType_t)0);
-        //     vTaskResume(xCommonSendHandle);
-        // }
+        {
+            // ESP_LOG_BUFFER_HEXDUMP(TAG, (const char *)buffer, length, ESP_LOG_INFO);
+            user_buffer_common_queue.len = length;
+            for (size_t i = 0; i < length; i++)
+            {
+                user_buffer_common_queue.buffer[i] = ((uint8_t *)buffer)[i];
+            }
+            xQueueSend(common_queue, (void *)(&user_buffer_common_queue), (TickType_t)0);
+            vTaskResume(xCommonSendHandle);
+        }
     }
     else
     {
@@ -267,7 +275,6 @@ static void protocol_udp_handler(uint8_t *buffer, int32_t length)
     }
     else if (board_data.input == E_TCP)
     {
-
     }
 }
 /**
@@ -289,6 +296,7 @@ static void common_send_task(void *ctx)
         {
             ESP_LOGI(TAG, "number of messages stored in a queue = %d", uxQueueMessagesWaiting(common_queue));
             // check buffer
+            ESP_LOGI(TAG, "data received: %s", (uint8_t *)user_buffer_common_queue.buffer);
             // receive message and parse it
             if (board_data.input == E_BLUETOOTH)
             {

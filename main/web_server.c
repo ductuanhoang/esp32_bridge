@@ -778,9 +778,6 @@ static httpd_handle_t web_server_start(void)
         register_uri_handler(server, "/config", HTTP_POST, config_post_handler);
         register_uri_handler(server, "/status", HTTP_GET, status_get_handler);
 
-        // register_uri_handler(server, "/log", HTTP_GET, log_get_handler);
-        // register_uri_handler(server, "/core_dump", HTTP_GET, core_dump_get_handler);
-        // register_uri_handler(server, "/heap_info", HTTP_GET, heap_info_get_handler);
         register_uri_handler(server, "/wifi/scan", HTTP_GET, wifi_scan_get_handler);
 
         register_uri_handler(server, "/*", HTTP_GET, file_get_handler);

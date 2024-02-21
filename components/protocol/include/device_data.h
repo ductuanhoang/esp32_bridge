@@ -21,11 +21,11 @@ extern "C"
      */
     typedef enum
     {
-        E_BLUETOOTH,
-        E_CAN_BUS,
-        E_SERIAL_UART,
+        E_BLUETOOTH = 1,
+        E_TCP,
         E_UDP,
-        E_TCP
+        E_SERIAL_UART,
+        E_CAN_BUS
     } e_protocol_type;
 
     typedef struct
