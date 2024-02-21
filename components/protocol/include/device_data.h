@@ -18,8 +18,8 @@ extern "C"
 #define ESP32_BRIDGE_UDP_PORT 26002
 #define UART_MAX_BUFFER_SIZE 512
 
-#define ESP_UART_RX_PIN (17)
-#define ESP_UART_TX_PIN (10)
+#define ESP_UART_RX_PIN (18)
+#define ESP_UART_TX_PIN (17)
     /**
      * @brief
      *
