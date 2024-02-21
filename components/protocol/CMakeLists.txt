@@ -1,4 +1,4 @@
-set(pri_req ArduinoJson esp_event driver esp_wifi)
+set(pri_req ArduinoJson esp_event driver esp_wifi bt)
 
 # Set the directories that should be included in the build command for this target
 # when running g++ these will be included as -I/directory/path/
@@ -6,6 +6,8 @@ message(CMAKE_CURRENT_LIST_DIR="${CMAKE_CURRENT_LIST_DIR}")
 
 set(USER_MESSAGE
     ${CMAKE_CURRENT_LIST_DIR}/src/UDP.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/src/gatt_svr.c
+    ${CMAKE_CURRENT_LIST_DIR}/src/Bluetooth.cpp
 )
 
 set(include_dirs "include")

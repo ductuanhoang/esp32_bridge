@@ -55,21 +55,10 @@ static char *reset_reason_name(esp_reset_reason_t reason);
 
 board_info_t board_data;
 board_status_t board_status;
-
-// static void reset_button_task() {
-//     QueueHandle_t button_queue = button_init(PIN_BIT(GPIO_NUM_0));
-//     gpio_set_pull_mode(GPIO_NUM_0, GPIO_PULLUP_ONLY);
-//     while (true) {
-//         button_event_t button_ev;
-//         if (xQueueReceive(button_queue, &button_ev, 1000 / portTICK_PERIOD_MS)) {
-//             if (button_ev.event == BUTTON_DOWN && button_ev.duration > 5000) {
-//                 config_reset();
-//                 vTaskDelay(2000 / portTICK_PERIOD_MS);
-//                 esp_restart();
-//             }
-//         }
-//     }
-// }
+uint8_t uart_message_handle[UART_MAX_BUFFER_SIZE] = "";
+uint16_t conn_handle;
+bool notify_state;
+uint16_t uart_service_handle;
 
 static void sntp_time_set_handler(struct timeval *tv)
 {

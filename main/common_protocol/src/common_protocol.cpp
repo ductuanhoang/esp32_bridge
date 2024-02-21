@@ -78,7 +78,7 @@
 #include "device_data.h"
 
 #include "interface/web_socket_client.h"
-
+#include "Bluetooth.h"
 #define TAG "COMMON_PROTOCOL"
 
 /***********************************************************************************************************************
@@ -157,6 +157,7 @@ void common_protocol_init(void)
     else if (board_data.input == E_BLUETOOTH)
     {
         ESP_LOGI(TAG, "config input with E_BLUETOOTH");
+        Bluetooth_init();
     }
     else if (board_data.input == E_UDP)
     {

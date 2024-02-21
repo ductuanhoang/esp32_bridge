@@ -9,6 +9,11 @@ extern "C"
 #include <stdio.h>
 #include <string.h>
 
+#define BLE_DEVICE_NAME "ESP32_Bridge"
+#define NMEA_SERVICE    0x1000
+#define NMEA_RMC_READ   0x1001
+#define NMEA_RMC_WRITE   0x1002
+
 #define ESP32_BRIDGE_TCP_PORT 26001
 #define ESP32_BRIDGE_UDP_PORT 26002
 #define UART_MAX_BUFFER_SIZE 512
@@ -48,6 +53,11 @@ extern "C"
 
     extern board_info_t board_data;
     extern board_status_t board_status;
+
+    extern uint8_t uart_message_handle[UART_MAX_BUFFER_SIZE];
+    extern uint16_t conn_handle;
+    extern bool notify_state;
+    extern uint16_t uart_service_handle;
 #ifdef __cplusplus
 }
 #endif

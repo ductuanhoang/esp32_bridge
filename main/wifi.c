@@ -323,7 +323,7 @@ void net_init() {
 void wifi_init() {
     wifi_init_config_t wifi_init_config = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&wifi_init_config));
-    ESP_ERROR_CHECK( esp_wifi_set_ps(WIFI_PS_NONE) ); //must call this
+    // ESP_ERROR_CHECK( esp_wifi_set_ps(WIFI_PS_NONE) ); //must call this
 
     wifi_event_group = xEventGroupCreate();
 
