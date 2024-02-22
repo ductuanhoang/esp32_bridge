@@ -46,31 +46,32 @@ static void TCP_Task(void *ctx)
     ESP_LOGI(TAG, "board_data.input = %d", board_data.input);
 
     int addr_family = AF_INET;
-    int ip_protocol = IPPROTO_TCP;
+    int ip_protocol = IPPROTO_IP;
+    char host_ip[] = ESP32_Bridge_TCP_IP;
 
     while (1)
     {
-        struct sockaddr_in dest_addr;
-        dest_addr.sin_addr.s_addr = inet_addr(ESP32_Bridge_TCP_IP); // Listen on any IP address
-        dest_addr.sin_family = AF_INET;
+        ESP_LOGI(TAG, "connect to ip %s and port %d", host_ip, ESP32_BRIDGE_TCP_PORT);
         board_data.port = ESP32_BRIDGE_TCP_PORT;
-
+        struct sockaddr_in dest_addr;
+        dest_addr.sin_addr.s_addr = inet_addr(host_ip);
+        dest_addr.sin_family = AF_INET;
         dest_addr.sin_port = htons(board_data.port);
+        addr_family = AF_INET;
+        ip_protocol = IPPROTO_IP;
 
-        int sock = socket(addr_family, SOCK_DGRAM, ip_protocol);
+        int sock = socket(addr_family, SOCK_STREAM, ip_protocol);
         if (sock < 0)
         {
             ESP_LOGE(TAG, "Unable to create socket: errno %d", errno);
-            return;
         }
-
-        int err = bind(sock, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
+        ESP_LOGI(TAG, "Socket created, connecting to %s:%d", host_ip, board_data.port);
+        int err = connect(sock, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
         if (err < 0)
         {
             ESP_LOGE(TAG, "Socket unable to bind: errno %d", errno);
-            return;
         }
-
+        ESP_LOGI(TAG, "Successfully connected");
         while (1)
         {
             struct sockaddr_in source_addr;
@@ -105,7 +106,7 @@ static void TCP_Task(void *ctx)
 
         if (sock != -1)
         {
-            // ESP_LOGI(TAG, "Shutting down socket...");
+            ESP_LOGI(TAG, "Shutting down socket...");
             shutdown(sock, 0);
             close(sock);
         }

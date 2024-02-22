@@ -165,6 +165,7 @@ void common_protocol_init(void)
     {
         ESP_LOGI(TAG, "config input with E_UDP");
         wait_for_ip();
+        UDPRegisterCallback(protocol_udp_tcp_handler);
         UDP_Init();
     }
     else if (board_data.input == E_TCP)
