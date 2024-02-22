@@ -83,9 +83,9 @@ void BluetoothRegisterCallback(bluetooth_messge_call_back_t callback)
         bluetooth_messge_call_back = callback;
 }
 
-void BluetoothSendMessage(const char *message, uint16_t len)
+void BluetoothSendMessage(uint8_t *message, size_t len)
 {
-    gatt_report_notify(message, len);
+    gatt_report_notify((const char *)message, len);
 }
 /****************************************************************************************************/
 // Static functions

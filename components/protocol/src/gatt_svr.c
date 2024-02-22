@@ -52,7 +52,7 @@ static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
          {
              .uuid = BLE_UUID16_DECLARE(NMEA_RMC_WRITE),
              .access_cb = gatt_svr_chr_rmc_write_notify,
-             .val_handle = &uart_service_handle,
+             //  .val_handle = &uart_service_handle,
              .flags = BLE_GATT_CHR_F_WRITE,
          },
          {
@@ -135,7 +135,7 @@ static int gatt_svr_chr_rmc_write_notify(uint16_t conn_handle, uint16_t attr_han
     if (uuid == NMEA_RMC_WRITE)
     {
         rc = gatt_svr_chr_write(ctxt->om, 0,
-                                sizeof (uart_message_handle),
+                                sizeof(uart_message_handle),
                                 &uart_message_handle, NULL);
         ESP_LOGI(TAG, "message write = %s\n", uart_message_handle);
         return rc;
@@ -206,14 +206,14 @@ int gatt_svr_init(void)
  */
 void gatt_report_notify(const char *message, uint16_t len)
 {
-    ESP_LOGI(TAG, "send report from uart port with len = %d", len);
     int rc;
     struct os_mbuf *om;
-
+    snprintf((char *)uart_message_handle, len + 1, "%s", message);
     if (!notify_state)
     {
         return;
     }
+    ESP_LOGI(TAG, "send report message: %s with len: %d", message, len);
 
     om = ble_hs_mbuf_from_flat(message, len);
     rc = ble_gattc_notify_custom(conn_handle, uart_service_handle, om);

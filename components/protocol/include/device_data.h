@@ -18,7 +18,7 @@ extern "C"
 // port 8023
 #define ESP32_BRIDGE_TCP_PORT 8023
 #define ESP32_BRIDGE_UDP_PORT 8023
-#define ESP32_Bridge_TCP_IP "10.33.3.4"
+#define ESP32_Bridge_TCP_IP "192.168.1.5"//"10.33.3.4"
 #define UART_MAX_BUFFER_SIZE 512
 
 #define ESP_UART_RX_PIN (18)

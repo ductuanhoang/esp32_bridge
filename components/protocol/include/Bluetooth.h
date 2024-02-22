@@ -35,4 +35,4 @@ void Bluetooth_init(void);
 
 void BluetoothRegisterCallback(bluetooth_messge_call_back_t callback);
 
-void BluetoothSendMessage(const char *message, uint16_t len);
+void BluetoothSendMessage(uint8_t *message, size_t len);

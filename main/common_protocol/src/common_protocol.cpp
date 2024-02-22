@@ -150,19 +150,28 @@ void udp_send(std::string message);
  */
 void common_protocol_init(void)
 {
+    uint8_t protocol_uart_enabled = 0;
+    uint8_t protocol_bluetooth_enabled = 0;
+    uint8_t protocol_udp_enabled = 0;
+    uint8_t protocol_tcp_enabled = 0;
+    uint8_t protocol_canbus_enabled = 0;
+
     // check input config uart file
     if (board_data.input == E_SERIAL_UART)
     {
+        protocol_uart_enabled = 1;
         ESP_LOGI(TAG, "config input with E_SERIAL_UART");
         uart_register_read_handler(common_uart_handler);
     }
     else if (board_data.input == E_BLUETOOTH)
     {
+        protocol_bluetooth_enabled = 1;
         ESP_LOGI(TAG, "config input with E_BLUETOOTH");
         Bluetooth_init();
     }
     else if (board_data.input == E_UDP)
     {
+        protocol_udp_enabled = 1;
         ESP_LOGI(TAG, "config input with E_UDP");
         wait_for_ip();
         UDPRegisterCallback(protocol_udp_tcp_handler);
@@ -170,6 +179,7 @@ void common_protocol_init(void)
     }
     else if (board_data.input == E_TCP)
     {
+        protocol_tcp_enabled = 1;
         ESP_LOGI(TAG, "config input with E_TCP");
         wait_for_ip();
         TCPRegisterCallback(protocol_udp_tcp_handler);
@@ -177,6 +187,7 @@ void common_protocol_init(void)
     }
     else if (board_data.input == E_CAN_BUS)
     {
+        protocol_canbus_enabled = 1;
         ESP_LOGI(TAG, "config input with input");
     }
 
@@ -189,6 +200,9 @@ void common_protocol_init(void)
     if (board_data.output == E_BLUETOOTH)
     {
         ESP_LOGI(TAG, "config output with E_BLUETOOTH");
+        if (protocol_bluetooth_enabled != 1)
+            Bluetooth_init();
+        protocol_connection.send_u8 = BluetoothSendMessage;
         // send via BLUETOOTH
     }
     if (board_data.output == E_CAN_BUS)
@@ -200,12 +214,16 @@ void common_protocol_init(void)
     {
         ESP_LOGI(TAG, "config output with E_UDP");
         wait_for_ip();
+        if (protocol_udp_enabled != 1)
+            UDP_Init();
         // protocol_connection.send_str = udp_send;
     }
     else if (board_data.output == E_TCP)
     {
         ESP_LOGI(TAG, "config output with E_TCP");
         wait_for_ip();
+        if (protocol_tcp_enabled != 1)
+            TCP_Init();
         // protocol_connection.send_str = tcp_send;
     }
 
@@ -312,19 +330,20 @@ static void common_send_task(void *ctx)
             // check buffer
             ESP_LOGI(TAG, "data received: %s", (uint8_t *)user_buffer_common_queue.buffer);
             // receive message and parse it
-            if (board_data.input == E_BLUETOOTH)
+            if (board_data.output == E_BLUETOOTH)
+            {
+                protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
+            }
+            else if (board_data.output == E_CAN_BUS)
             {
             }
-            else if (board_data.input == E_CAN_BUS)
+            else if (board_data.output == E_SERIAL_UART)
             {
             }
-            else if (board_data.input == E_SERIAL_UART)
+            else if (board_data.output == E_UDP)
             {
             }
-            else if (board_data.input == E_UDP)
-            {
-            }
-            else if (board_data.input == E_TCP)
+            else if (board_data.output == E_TCP)
             {
             }
             free_send_message_report();
