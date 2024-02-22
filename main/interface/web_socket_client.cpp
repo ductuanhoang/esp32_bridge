@@ -166,7 +166,7 @@ static void web_socket_client_task(void *ctx)
         .reconnect_timeout_ms = 10000, // 10 seconds
         .network_timeout_ms = 10000    // 10 seconds
     };
-    const char *ws_template = "ws://%s:%d/LedPlayer";
+    const char *ws_template = "ws://%s:%d";
     char buffer_uri[50];
     const TickType_t delay_time = 1000 / portTICK_PERIOD_MS;
 
@@ -190,7 +190,7 @@ static void web_socket_client_task(void *ctx)
     //ESP_LOGI(TAG, "Endpoint uri: %s\n", line);
 #else
     ESP_LOGE(TAG, "---- check host = %s  -- port = %d", host, port);
-    sprintf(buffer_uri, ws_template, host, port);
+    sprintf(buffer_uri, ws_template, ESP32_Bridge_TCP_IP, ESP32_BRIDGE_TCP_PORT);
     websocket_cfg.uri = buffer_uri;
     websocket_cfg.transport = WEBSOCKET_TRANSPORT_OVER_TCP;
     websocket_cfg.disable_auto_reconnect = false;

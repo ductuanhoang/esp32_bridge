@@ -10,12 +10,15 @@ extern "C"
 #include <string.h>
 
 #define BLE_DEVICE_NAME "ESP32_Bridge"
-#define NMEA_SERVICE    0x1000
-#define NMEA_RMC_READ   0x1001
-#define NMEA_RMC_WRITE   0x1002
+#define NMEA_SERVICE 0x1000
+#define NMEA_RMC_READ 0x1001
+#define NMEA_RMC_WRITE 0x1002
 
-#define ESP32_BRIDGE_TCP_PORT 26001
-#define ESP32_BRIDGE_UDP_PORT 26002
+// 10.33.3.4
+// port 8023
+#define ESP32_BRIDGE_TCP_PORT 8023
+#define ESP32_BRIDGE_UDP_PORT 8023
+#define ESP32_Bridge_TCP_IP "10.33.3.4"
 #define UART_MAX_BUFFER_SIZE 512
 
 #define ESP_UART_RX_PIN (18)
@@ -27,8 +30,8 @@ extern "C"
     typedef enum
     {
         E_BLUETOOTH = 1,
-        E_TCP,
         E_UDP,
+        E_TCP,
         E_SERIAL_UART,
         E_CAN_BUS
     } e_protocol_type;
