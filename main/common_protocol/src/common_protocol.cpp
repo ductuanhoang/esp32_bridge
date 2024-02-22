@@ -79,6 +79,8 @@
 
 #include "interface/web_socket_client.h"
 #include "Bluetooth.h"
+#include "TCP.h"
+#include "UDP.h"
 #define TAG "COMMON_PROTOCOL"
 
 /***********************************************************************************************************************
@@ -119,7 +121,7 @@ static void common_send_task(void *ctx);
 
 static void free_send_message_report(void);
 static void common_uart_handler(void *handler_args, esp_event_base_t base, int32_t length, void *buffer);
-static void protocol_udp_handler(uint8_t *buffer, int32_t length);
+static void protocol_udp_tcp_handler(uint8_t *buffer, int32_t length);
 static void common_uart_send(uint8_t *message, size_t len);
 
 static protocol_connection_t protocol_connection;
@@ -163,11 +165,14 @@ void common_protocol_init(void)
     {
         ESP_LOGI(TAG, "config input with E_UDP");
         wait_for_ip();
+        UDP_Init();
     }
     else if (board_data.input == E_TCP)
     {
         ESP_LOGI(TAG, "config input with E_TCP");
         wait_for_ip();
+        TCPRegisterCallback(protocol_udp_tcp_handler);
+        TCP_Init();
     }
     else if (board_data.input == E_CAN_BUS)
     {
@@ -194,19 +199,13 @@ void common_protocol_init(void)
     {
         ESP_LOGI(TAG, "config output with E_UDP");
         wait_for_ip();
-        web_socket_client_init();
-        // json format
-        protocol_connection.send_str = web_socket_client_send_message;
         // protocol_connection.send_str = udp_send;
     }
     else if (board_data.output == E_TCP)
     {
         ESP_LOGI(TAG, "config output with E_TCP");
         wait_for_ip();
-        web_socket_client_init();
-        // json format
-        protocol_connection.send_str = web_socket_client_send_message;
-        // protocol_connection.send_str = udp_send;
+        // protocol_connection.send_str = tcp_send;
     }
 
     common_queue = xQueueCreate(12, sizeof(user_buffer_common_queue));
@@ -254,7 +253,7 @@ static void common_uart_handler(void *handler_args, esp_event_base_t base, int32
  * @param buffer
  * @param length
  */
-static void protocol_udp_handler(uint8_t *buffer, int32_t length)
+static void protocol_udp_tcp_handler(uint8_t *buffer, int32_t length)
 {
     // ESP_LOGI(TAG, "protocol_udp_handler %ld bytes ", length);
     stream_stats_increment(common_stream_stats, 0, length);
@@ -276,6 +275,19 @@ static void protocol_udp_handler(uint8_t *buffer, int32_t length)
     }
     else if (board_data.input == E_TCP)
     {
+        ESP_LOGI(TAG, "recieved with len = %ld", length);
+        // int ret = device_manager_check_package((const char *)buffer, length);
+        // if (ret == 0)
+        {
+            // ESP_LOG_BUFFER_HEXDUMP(TAG, (const char *)buffer, length, ESP_LOG_INFO);
+            user_buffer_common_queue.len = length;
+            for (size_t i = 0; i < length; i++)
+            {
+                user_buffer_common_queue.buffer[i] = ((uint8_t *)buffer)[i];
+            }
+            xQueueSend(common_queue, (void *)(&user_buffer_common_queue), (TickType_t)0);
+            vTaskResume(xCommonSendHandle);
+        }
     }
 }
 /**
