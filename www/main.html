@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="jquery-3.7.0.min.js"></script>
     <title>Dashboard - ABC Company</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-R9dJ5HtCxOZvJLSGyxVLM8ZilXObFz+jfGwRouIz+9XXUkJ2M0B/7SF+daeqJ7MWugF3t1TKlfU08+o8nl8KGw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-R9dJ5HtCxOZvJLSGyxVLM8ZilXObFz+jfGwRouIz+9XXUkJ2M0B/7SF+daeqJ7MWugF3t1TKlfU08+o8nl8KGw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,10 +16,12 @@
             padding: 0;
             background-color: #f0f0f0;
         }
+
         .container {
             display: flex;
             height: 100vh;
         }
+
         .left-panel {
             flex: 0 0 25%;
             background-color: #333;
@@ -25,11 +31,13 @@
             display: flex;
             flex-direction: column;
         }
+
         .right-panel {
             flex: 1;
             padding: 20px;
             box-sizing: border-box;
         }
+
         button {
             display: block;
             width: 100%;
@@ -41,10 +49,13 @@
             background-color: #555;
             color: #fff;
         }
-        button:hover, .selected {
+
+        button:hover,
+        .selected {
             background-color: #007bff;
             color: white;
         }
+
         select {
             width: 100%;
             padding: 10px;
@@ -52,10 +63,12 @@
             border-radius: 5px;
             box-sizing: border-box;
         }
+
         .search-bar {
             margin-bottom: 10px;
             position: relative;
         }
+
         .search-bar input {
             width: calc(100% - 30px);
             padding: 10px 30px 10px 10px;
@@ -63,6 +76,7 @@
             border-radius: 5px;
             box-sizing: border-box;
         }
+
         .search-bar i {
             position: absolute;
             top: 50%;
@@ -70,12 +84,15 @@
             transform: translateY(-50%);
             color: #555;
         }
+
         .menu-bar {
             display: flex;
         }
+
         .menu-bar button {
             margin-right: 10px;
         }
+
         .debug-message {
             margin-top: 20px;
             padding: 20px;
@@ -85,6 +102,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="left-panel">
@@ -104,18 +122,20 @@
                 <button>TCP</button>
                 <button>Bluetooth</button>
             </div>
-            <div class="debug-message" id="debugMessage"></div>
+            <div class="debug-message" id="debugMessage">
+
+            </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("dashboard").onclick = function() { navigateToDashboard(); };
-            document.getElementById("settings").onclick = function() { navigateToSettings(); };
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("dashboard").onclick = function () { navigateToDashboard(); };
+            document.getElementById("settings").onclick = function () { navigateToSettings(); };
 
             var buttons = document.querySelectorAll(".menu-bar button");
-            buttons.forEach(function(button) {
-                button.addEventListener('click', function() {
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
                     printDebugMessage.call(this, this.textContent.trim());
                 });
             });
@@ -132,12 +152,12 @@
         function printDebugMessage(protocol) {
             var debugMessage = "Selected protocol: " + protocol;
             document.getElementById("debugMessage").innerText = debugMessage;
-            
+
             var buttons = document.querySelectorAll(".menu-bar button");
-            buttons.forEach(function(button) {
+            buttons.forEach(function (button) {
                 button.classList.remove("selected");
             });
-            
+
             this.classList.add("selected");
         }
 
@@ -155,6 +175,31 @@
                 }
             }
         }
+        var message_print_content = function () {
+            console.log("message_print_content called"); // Log when function is called
+            $.ajax({
+                url: 'message/log',
+                dataType: 'json',
+                timeout: 200
+            }).done(function (data) {
+                var message = data.message;
+                var new_event = data.new_event;
+                if( new_event == 1)
+                {
+                    console.log("Success:", message); // Log successful data retrieval
+                    document.getElementById("debugMessage").innerText += message;
+                }
+                else console.log("Success but ignore: ", message); // Log successful data retrieval
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error("AJAX call failed:", textStatus, errorThrown); // Log any errors
+            }).always(function () {
+                console.log("Scheduling next call"); // Log the scheduling of the next call
+                setTimeout(message_print_content, 1000);
+            });
+        };
+        message_print_content();
+
     </script>
 </body>
+
 </html>

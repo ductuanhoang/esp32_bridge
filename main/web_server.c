@@ -739,6 +739,15 @@ static esp_err_t wifi_scan_get_handler(httpd_req_t *req) {
     return json_response(req, root);
 }
 
+static esp_err_t message_log_handler(httpd_req_t *req) {
+    // ESP_LOGI(TAG, "------message_log_handler called");
+    cJSON *root = cJSON_CreateObject();
+    cJSON_AddStringToObject(root, "message", board_data.message);
+    cJSON_AddNumberToObject(root, "new_event", board_data.new_event);
+    board_data.new_event = 0;
+
+    return json_response(req, root);
+}
 
 static esp_err_t register_uri_handler(httpd_handle_t server, const char *path, httpd_method_t method, esp_err_t (*handler)(httpd_req_t *r)) {
     httpd_uri_t uri_config_get = {
@@ -778,6 +787,7 @@ static httpd_handle_t web_server_start(void)
         register_uri_handler(server, "/config", HTTP_POST, config_post_handler);
         register_uri_handler(server, "/status", HTTP_GET, status_get_handler);
 
+        register_uri_handler(server, "/message/log", HTTP_GET, message_log_handler);
         register_uri_handler(server, "/wifi/scan", HTTP_GET, wifi_scan_get_handler);
 
         register_uri_handler(server, "/*", HTTP_GET, file_get_handler);

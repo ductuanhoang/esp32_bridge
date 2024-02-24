@@ -329,6 +329,8 @@ static void common_send_task(void *ctx)
             ESP_LOGI(TAG, "number of messages stored in a queue = %d", uxQueueMessagesWaiting(common_queue));
             // check buffer
             ESP_LOGI(TAG, "data received: %s", (uint8_t *)user_buffer_common_queue.buffer);
+            sprintf((char *)board_data.message, "%s\r\n", (char *)user_buffer_common_queue.buffer);
+            board_data.new_event = 1;
             // receive message and parse it
             if (board_data.output == E_BLUETOOTH)
             {
