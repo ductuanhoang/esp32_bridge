@@ -281,16 +281,16 @@ static void protocol_udp_tcp_handler(uint8_t *buffer, int32_t length)
         // ESP_LOG_BUFFER_HEXDUMP(TAG, (const char *)buffer, length, ESP_LOG_INFO);
         // int ret = daktronics_push_data_to_buffer((const uint8_t *)buffer, length);
         // if (ret == 0)
-        // {
-        //     user_buffer_common_queue.len = length;
-        //     for (size_t i = 0; i < length; i++)
-        //     {
-        //         user_buffer_common_queue.buffer[i] = ((uint8_t *)buffer)[i];
-        //     }
+        {
+            user_buffer_common_queue.len = length;
+            for (size_t i = 0; i < length; i++)
+            {
+                user_buffer_common_queue.buffer[i] = ((uint8_t *)buffer)[i];
+            }
 
-        //     xQueueSend(common_queue, (void *)(&user_buffer_common_queue), (TickType_t)0);
-        //     vTaskResume(xCommonSendHandle);
-        // }
+            xQueueSend(common_queue, (void *)(&user_buffer_common_queue), (TickType_t)0);
+            vTaskResume(xCommonSendHandle);
+        }
     }
     else if (board_data.input == E_TCP)
     {
@@ -332,19 +332,28 @@ static void common_send_task(void *ctx)
             // receive message and parse it
             if (board_data.output == E_BLUETOOTH)
             {
-                protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
+                if (protocol_connection.send_u8 != NULL)
+                    protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
             }
             else if (board_data.output == E_CAN_BUS)
             {
+                if (protocol_connection.send_u8 != NULL)
+                    protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
             }
             else if (board_data.output == E_SERIAL_UART)
             {
+                if (protocol_connection.send_u8 != NULL)
+                    protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
             }
             else if (board_data.output == E_UDP)
             {
+                if (protocol_connection.send_u8 != NULL)
+                    protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
             }
             else if (board_data.output == E_TCP)
             {
+                if (protocol_connection.send_u8 != NULL)
+                    protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
             }
             free_send_message_report();
         }
@@ -371,7 +380,7 @@ static void free_send_message_report(void)
 static void common_uart_send(uint8_t *message, size_t len)
 {
     // ESP_LOG_BUFFER_HEXDUMP(TAG, (const char *)message, len, ESP_LOG_INFO);
-    uart_write_bytes(UART_NUM_0, message, len);
+    uart_write_bytes(UART_NUM_1, message, len);
 }
 
 /***********************************************************************************************************************
