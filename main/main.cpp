@@ -103,7 +103,8 @@ static void user_get_data_input(void)
         config_set(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &ui32);
     }
 
-    ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_TCP_IP), &board_data.ip_addressp);
+    config_get_str_blob_alloc(CONF_ITEM(KEY_CONFIG_INPUT_TCP_IP), (void **)&board_data.ip_addressp);
+    ESP_LOGI(TAG, "config_get_primitive[KEY_CONFIG_INPUT_TCP_IP] = %s", board_data.ip_addressp);
     if (strcmp(board_data.ip_addressp, "") == 0)
     {
         sprintf(board_data.ip_addressp, "%s", ESP32_Bridge_TCP_IP);
@@ -122,10 +123,10 @@ void app_main()
     stream_stats_init();
 
     config_init();
+    uart_init();
     user_get_data_input();
     show_config_board();
 
-    uart_init();
     esp_reset_reason_t reset_reason = esp_reset_reason();
 
     const esp_app_desc_t *app_desc = esp_ota_get_app_description();

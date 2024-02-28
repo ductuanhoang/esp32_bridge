@@ -40,7 +40,7 @@ extern "C"
     {
         e_protocol_type input;
         e_protocol_type output;
-        char ip_addressp[32];
+        char *ip_addressp;
         uint16_t port;
         char message[UART_MAX_BUFFER_SIZE+2];
         uint8_t new_event;

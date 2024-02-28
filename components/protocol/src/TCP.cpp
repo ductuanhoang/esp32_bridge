@@ -53,9 +53,9 @@ static void TCP_Task(void *ctx)
 
     while (1)
     {
-        ESP_LOGI(TAG, "connect to ip %s and port %d", host_ip, board_data.port);
+        ESP_LOGI(TAG, "connect to ip %s and port %d", board_data.ip_addressp, board_data.port);
         struct sockaddr_in dest_addr;
-        dest_addr.sin_addr.s_addr = inet_addr(host_ip);
+        dest_addr.sin_addr.s_addr = inet_addr(board_data.ip_addressp);
         dest_addr.sin_family = AF_INET;
         dest_addr.sin_port = htons(board_data.port);
         addr_family = AF_INET;
@@ -66,7 +66,7 @@ static void TCP_Task(void *ctx)
         {
             ESP_LOGE(TAG, "Unable to create socket: errno %d", errno);
         }
-        ESP_LOGI(TAG, "Socket created, connecting to %s:%d", host_ip, board_data.port);
+        ESP_LOGI(TAG, "Socket created, connecting to %s:%d", board_data.ip_addressp, board_data.port);
         int err = connect(sock, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
         if (err < 0)
         {
