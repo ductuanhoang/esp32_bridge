@@ -766,6 +766,9 @@ static httpd_handle_t web_server_start(void)
     // get data output
     config_get_primitive(CONF_ITEM(KEY_CONFIG_OUTPUT_PROTO_TYPE), &board_data.output);
 
+    config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_TCP_IP), &board_data.ip_addressp);
+    config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &board_data.port);
+
     if (auth_method == AUTH_METHOD_BASIC) {
         char *username, *password;
         config_get_str_blob_alloc(CONF_ITEM(KEY_CONFIG_ADMIN_USERNAME), (void **) &username);

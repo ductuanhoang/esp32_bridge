@@ -95,6 +95,20 @@ static void user_get_data_input(void)
         ui8 = E_BLUETOOTH;
         config_set(CONF_ITEM(KEY_CONFIG_INPUT_PROTO_TYPE), &ui8);
     }
+
+    ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &board_data.port);
+    if (board_data.port == 0)
+    {
+        ui32 = ESP32_BRIDGE_UDP_PORT;
+        config_set(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &ui32);
+    }
+
+    ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_TCP_IP), &board_data.ip_addressp);
+    if (strcmp(board_data.ip_addressp, "") == 0)
+    {
+        sprintf(board_data.ip_addressp, "%s", ESP32_Bridge_TCP_IP);
+        config_set(CONF_ITEM(KEY_CONFIG_INPUT_TCP_IP), &board_data.ip_addressp);
+    }
 }
 
 void app_main()

@@ -387,6 +387,8 @@ void wifi_init() {
         config_get_str_blob(CONF_ITEM(KEY_CONFIG_WIFI_AP_PASSWORD), &config_ap.ap.password, &ap_password_len);
         ap_password_len--; // Remove null terminator from length
         config_get_primitive(CONF_ITEM(KEY_CONFIG_WIFI_AP_AUTH_MODE), &config_ap.ap.authmode);
+        if( ap_password_len <= 0)
+            config_ap.ap.authmode = WIFI_AUTH_OPEN;
 
         ESP_LOGI(TAG, "WIFI_AP_SSID: %s %s(%s)", config_ap.ap.ssid,
                 config_ap.ap.ssid_hidden ? "(hidden) " : "",

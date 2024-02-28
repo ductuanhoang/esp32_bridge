@@ -124,7 +124,9 @@ typedef struct config_item {
 
 // configuration input parameters
 #define KEY_CONFIG_INPUT_PROTO_TYPE "in_pro_type" // input protocol type
-
+// config port and ip of tcp interface
+#define KEY_CONFIG_INPUT_TCP_IP "in_tcp_ip"
+#define KEY_CONFIG_INPUT_TCP_PORT "in_tcp_port"
 // configuration output parameters
 #define KEY_CONFIG_OUTPUT_PROTO_TYPE "out_pro_type"
 

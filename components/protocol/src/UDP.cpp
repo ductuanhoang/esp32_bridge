@@ -52,10 +52,10 @@ static void UDP_Task(void *ctx)
     struct sockaddr_in dest_addr;
     dest_addr.sin_addr.s_addr = htonl(INADDR_ANY); // Listen on any IP address
     dest_addr.sin_family = AF_INET;
-    if (board_data.input == E_UDP)
-        board_data.port = ESP32_BRIDGE_UDP_PORT;
-    else if (board_data.input == E_TCP)
-        board_data.port = ESP32_BRIDGE_TCP_PORT;
+    // if (board_data.input == E_UDP)
+    //     board_data.port = ESP32_BRIDGE_UDP_PORT;
+    // else if (board_data.input == E_TCP)
+    //     board_data.port = ESP32_BRIDGE_TCP_PORT;
 
     dest_addr.sin_port = htons(board_data.port);
 

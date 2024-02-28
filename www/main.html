@@ -96,9 +96,18 @@
         .debug-message {
             margin-top: 20px;
             padding: 20px;
-            background-color: #fff;
+            width: 100vw;
+            /* 100% of the viewport width */
+            height: 100vh;
+            /* 100% of the viewport height */
+            overflow-y: scroll;
+            /* Add a vertical scrollbar */
             border: 1px solid #ccc;
-            border-radius: 5px;
+            /* Optional: adds a border around the log */
+            padding: 10px;
+            /* Optional: adds some padding inside the log container */
+            box-sizing: border-box;
+            /* Ensures padding does not affect the size */
         }
     </style>
 </head>
@@ -121,6 +130,7 @@
                 <button>UDP</button>
                 <button>TCP</button>
                 <button>Bluetooth</button>
+                <button>CAN Bus</button>
             </div>
             <div class="debug-message" id="debugMessage">
 
@@ -184,8 +194,7 @@
             }).done(function (data) {
                 var message = data.message;
                 var new_event = data.new_event;
-                if( new_event == 1)
-                {
+                if (new_event == 1) {
                     console.log("Success:", message); // Log successful data retrieval
                     document.getElementById("debugMessage").innerText += message;
                 }

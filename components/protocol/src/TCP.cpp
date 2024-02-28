@@ -44,6 +44,8 @@ static void TCP_Task(void *ctx)
 {
     ESP_LOGI(TAG, "TCP_Task called");
     ESP_LOGI(TAG, "board_data.input = %d", board_data.input);
+    ESP_LOGI(TAG, "board_data.port = %d", board_data.port);
+    ESP_LOGI(TAG, "board_data.ip = %s", board_data.ip_addressp);
 
     int addr_family = AF_INET;
     int ip_protocol = IPPROTO_IP;
@@ -51,8 +53,7 @@ static void TCP_Task(void *ctx)
 
     while (1)
     {
-        ESP_LOGI(TAG, "connect to ip %s and port %d", host_ip, ESP32_BRIDGE_TCP_PORT);
-        board_data.port = ESP32_BRIDGE_TCP_PORT;
+        ESP_LOGI(TAG, "connect to ip %s and port %d", host_ip, board_data.port);
         struct sockaddr_in dest_addr;
         dest_addr.sin_addr.s_addr = inet_addr(host_ip);
         dest_addr.sin_family = AF_INET;

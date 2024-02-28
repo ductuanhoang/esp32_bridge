@@ -263,6 +263,16 @@ const config_item_t CONFIG_ITEMS[] = {
                 .type = CONFIG_ITEM_TYPE_INT8,
                 .def.uint8 = 1 //E_WIRED
         },
+        {
+                .key = KEY_CONFIG_INPUT_TCP_IP,
+                .type = CONFIG_ITEM_TYPE_STRING,
+                .def.str = ""
+        },
+        {
+                .key = KEY_CONFIG_INPUT_TCP_PORT,
+                .type = CONFIG_ITEM_TYPE_UINT32,
+                .def.int32 = 8023
+        },
 };
 
 const config_item_t *config_items_get(int *count) {

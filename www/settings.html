@@ -507,39 +507,39 @@
         }
 
         function checkProtocol(select) {
-        var inputField = document.getElementById('udp_input_port');
-        var inputField_2 = document.getElementById('in_xbee_group');
-        var selectedValue = select.value;
+            var inputField = document.getElementById('udp_input_port');
+            var inputField_2 = document.getElementById('in_xbee_group');
+            var selectedValue = select.value;
 
-        if (selectedValue !== '3') {
-            inputField.setAttribute('disabled', 'disabled');
-        } else {
-            inputField.removeAttribute('disabled');
+            if (selectedValue !== '3') {
+                inputField.setAttribute('disabled', 'disabled');
+            } else {
+                inputField.removeAttribute('disabled');
+            }
+
+            if (selectedValue !== '2') {
+                inputField_2.setAttribute('disabled', 'disabled');
+            } else {
+                inputField_2.removeAttribute('disabled');
+            }
         }
 
-        if (selectedValue !== '2') {
-            inputField_2.setAttribute('disabled', 'disabled');
-        } else {
-            inputField_2.removeAttribute('disabled');
-        }
-    }
+        function checkDaktronicsProtocol(select) {
+            var in_dak_bcast = document.getElementById('in_dak_bcast');
+            var in_dak_channel = document.getElementById('in_dak_channel');
+            var in_daktro_id = document.getElementById('in_daktro_id');
+            var selectedValue_dak = select.value;
 
-    function checkDaktronicsProtocol(select) {
-        var in_dak_bcast = document.getElementById('in_dak_bcast');
-        var in_dak_channel = document.getElementById('in_dak_channel');
-        var in_daktro_id = document.getElementById('in_daktro_id');
-        var selectedValue_dak = select.value;
-
-        if (selectedValue_dak == '3') {
-            in_dak_bcast.removeAttribute('disabled');
-            in_dak_channel.removeAttribute('disabled');
-            in_daktro_id.removeAttribute('disabled');
-        } else {
-            in_dak_bcast.setAttribute('disabled', 'disabled');
-            in_dak_channel.setAttribute('disabled', 'disabled');
-            in_daktro_id.setAttribute('disabled', 'disabled');
+            if (selectedValue_dak == '3') {
+                in_dak_bcast.removeAttribute('disabled');
+                in_dak_channel.removeAttribute('disabled');
+                in_daktro_id.removeAttribute('disabled');
+            } else {
+                in_dak_bcast.setAttribute('disabled', 'disabled');
+                in_dak_channel.setAttribute('disabled', 'disabled');
+                in_daktro_id.setAttribute('disabled', 'disabled');
+            }
         }
-    }
 
     </script>
 </head>
@@ -645,12 +645,12 @@
                                 <div class="col">
                                     <label>IP address</label>
                                     <div class="input-group">
-                                        <input type="number" name="w_sta_ip" value="192" maxlength="3" min="0" max="255"
+                                        <input type="number" name="w_sta_ip" value="10" maxlength="3" min="0" max="255"
                                             required class="form-control text-center px-1">
                                         <div class="input-group-append input-group-prepend">
                                             <span class="input-group-text px-1">.</span>
                                         </div>
-                                        <input type="number" name="w_sta_ip" value="168" maxlength="3" min="0" max="255"
+                                        <input type="number" name="w_sta_ip" value="0" maxlength="3" min="0" max="255"
                                             required class="form-control text-center px-1">
                                         <div class="input-group-append input-group-prepend">
                                             <span class="input-group-text px-1">.</span>
@@ -667,17 +667,17 @@
                                 <div class="col-7">
                                     <label>Gateway and subnet</label>
                                     <div class="input-group">
-                                        <input type="number" name="w_sta_gw" value="192" maxlength="3" min="0" max="255"
+                                        <input type="number" name="w_sta_gw" value="10" maxlength="3" min="0" max="255"
                                             required class="form-control text-center px-1">
                                         <div class="input-group-append input-group-prepend">
                                             <span class="input-group-text px-1">.</span>
                                         </div>
-                                        <input type="number" name="w_sta_gw" value="168" maxlength="3" min="0" max="255"
+                                        <input type="number" name="w_sta_gw" value="0" maxlength="3" min="0" max="255"
                                             required class="form-control text-center px-1">
                                         <div class="input-group-append input-group-prepend">
                                             <span class="input-group-text px-1">.</span>
                                         </div>
-                                        <input type="number" name="w_sta_gw" value="4" maxlength="3" min="0" max="255"
+                                        <input type="number" name="w_sta_gw" value="0" maxlength="3" min="0" max="255"
                                             required class="form-control text-center px-1">
                                         <div class="input-group-append input-group-prepend">
                                             <span class="input-group-text px-1">.</span>
@@ -937,7 +937,8 @@
                                     <label style="color:green"><b>Input</b></label>
                                     <div class="protocol-name-list">
                                         <label for="protocol">Bluetooth, Wireless, Serial or CAN bus:</label>
-                                        <select name="in_pro_type" id="switch-wire-wireless" class="custom-select" onchange="checkProtocol(this)">
+                                        <select name="in_pro_type" id="switch-wire-wireless" class="custom-select"
+                                            onchange="checkProtocol(this)">
                                             <option value="1" selected>Bluetooth</option>
                                             <option value="2">Wifi-UDP</option>
                                             <option value="3">Wifi-TCP</option>
@@ -945,6 +946,15 @@
                                             <option value="5">CAN Bus</option>
                                         </select>
                                     </div>
+                                    <h6>
+                                        <span>
+                                            <label style="color:green"><b>TCP IP</b></label>
+                                            <input type="text" name="in_tcp_ip" id="input-tcp-ip"
+                                                class="wifi-networks-ssid form-control">
+                                            <label style="color:green"><b>TCP Port</b></label>
+                                            <input type="text" name="in_tcp_port" id="input-tcp-port"
+                                                class="wifi-networks-ssid form-control">
+                                    </h6>
                                 </div>
                             </div>
                             <div class="form-row mb-3">
@@ -1055,8 +1065,8 @@
                     <input type="submit" class="form-control">
                 </div>
             </div>
-            </div>
-        </form>
+    </div>
+    </form>
     </div>
     <footer id="footer" class="bg-dark">
         <div class="container">
