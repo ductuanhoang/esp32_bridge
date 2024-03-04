@@ -93,6 +93,10 @@ static void UDP_Task(void *ctx)
             // //ESP_LOGI(TAG, "Received an empty packet, possibly due to a connection issue or sender behavior.");
             continue; // Handle according to your application's needs
         }
+        else if (len > UART_MAX_BUFFER_SIZE)
+        {
+            ESP_LOGE(TAG, "recvfrom failed: overflow len %d", len);
+        }
         else // Data received
         {
             rx_buffer[len] = 0; // Null-terminate whatever we received and treat like a string

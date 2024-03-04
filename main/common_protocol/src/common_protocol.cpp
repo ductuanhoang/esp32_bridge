@@ -327,6 +327,7 @@ static void common_send_task(void *ctx)
         if (xQueueReceive(common_queue, &(user_buffer_common_queue), (TickType_t)(5 / portTICK_PERIOD_MS)))
         {
             ESP_LOGI(TAG, "number of messages stored in a queue = %d", uxQueueMessagesWaiting(common_queue));
+            ESP_LOGI(TAG, "total heap space available = %d", xPortGetFreeHeapSize());
             // check buffer
             ESP_LOGI(TAG, "data received: %s", (uint8_t *)user_buffer_common_queue.buffer);
             sprintf((char *)board_data.message, "%s\r\n", (char *)user_buffer_common_queue.buffer);
