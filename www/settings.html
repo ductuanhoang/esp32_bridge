@@ -773,8 +773,8 @@
                                 <div class="col-4">
                                     <label>Auth method</label>
                                     <select name="adm_auth" class="custom-select">
-                                        <option value="0" selected>Open</option>
-                                        <option value="1">Hotspot devices only</option>
+                                        <!-- <option value="0" selected>Open</option>
+                                        <option value="1">Hotspot devices only</option> -->
                                         <option value="2">Username/password</option>
                                         <!--<option value="3">Button press</option>-->
                                     </select>
@@ -954,6 +954,28 @@
                                             <label style="color:green"><b>TCP Port</b></label>
                                             <input type="text" name="in_tcp_port" id="input-tcp-port"
                                                 class="wifi-networks-ssid form-control">
+                                            <label style="color:green"><b>UDP Port</b></label>
+                                            <input type="text" name="in_udp_port" id="input-udp-port"
+                                                class="wifi-networks-ssid form-control">
+                                            <div class="protocol-name-list">
+                                                <label for="protocol">Serial input/output baudrate:</label>
+                                                <select name="serial_baurate" id="serial-baudrate" class="custom-select">
+                                                    <option value="110" selected>110</option>
+                                                    <option value="300">300</option>
+                                                    <option value="600">600</option>
+                                                    <option value="1200">1200</option>
+                                                    <option value="2400">2400</option>
+                                                    <option value="4800">4800</option>
+                                                    <option value="9600">9600</option>
+                                                    <option value="14400">14400</option>
+                                                    <option value="19200">19200</option>
+                                                    <option value="38400">38400</option>
+                                                    <option value="57600">57600</option>
+                                                    <option value="115200">115200</option>
+                                                    <option value="128000">128000</option>
+                                                    <option value="256000">256000</option>
+                                                </select>
+                                            </div>
                                     </h6>
                                 </div>
                             </div>
@@ -1068,14 +1090,14 @@
     </div>
     </form>
     </div>
-    <footer id="footer" class="bg-dark">
+    <!-- <footer id="footer" class="bg-dark">
         <div class="container">
             <div class="text-center text-light">
                 <small><a></a> ESP32 Bridge</a> - Uptime <span class="uptime">loading...</span> - Heap <span
                         class="heap">loading...</span></small>
             </div>
         </div>
-    </footer>
+    </footer> -->
     <div class="modal fade" id="restarting-modal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

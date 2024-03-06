@@ -45,6 +45,7 @@ static void UDP_Task(void *ctx)
 {
     ESP_LOGI(TAG, "UDP_Task called");
     ESP_LOGI(TAG, "board_data.input = %d", board_data.input);
+    ESP_LOGI(TAG, "board_data.udp_port = %ld", board_data.udp_port);
 
     int addr_family = AF_INET;
     int ip_protocol = IPPROTO_UDP;
@@ -53,11 +54,11 @@ static void UDP_Task(void *ctx)
     dest_addr.sin_addr.s_addr = htonl(INADDR_ANY); // Listen on any IP address
     dest_addr.sin_family = AF_INET;
     // if (board_data.input == E_UDP)
-    //     board_data.port = ESP32_BRIDGE_UDP_PORT;
+    //     board_data.tcp_port = ESP32_BRIDGE_UDP_PORT;
     // else if (board_data.input == E_TCP)
-    //     board_data.port = ESP32_BRIDGE_TCP_PORT;
+    //     board_data.tcp_port = ESP32_BRIDGE_TCP_PORT;
 
-    dest_addr.sin_port = htons(board_data.port);
+    dest_addr.sin_port = htons(board_data.udp_port);
 
     int sock = socket(addr_family, SOCK_DGRAM, ip_protocol);
     if (sock < 0)

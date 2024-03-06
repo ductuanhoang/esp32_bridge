@@ -127,6 +127,8 @@ typedef struct config_item {
 // config port and ip of tcp interface
 #define KEY_CONFIG_INPUT_TCP_IP "in_tcp_ip"
 #define KEY_CONFIG_INPUT_TCP_PORT "in_tcp_port"
+#define KEY_CONFIG_INPUT_UDP_PORT "in_udp_port"
+#define KEY_CONFIG_SERIAL_BAUDRATE "serial_baurate"
 // configuration output parameters
 #define KEY_CONFIG_OUTPUT_PROTO_TYPE "out_pro_type"
 

@@ -273,6 +273,16 @@ const config_item_t CONFIG_ITEMS[] = {
                 .type = CONFIG_ITEM_TYPE_UINT32,
                 .def.int32 = 8023
         },
+        {
+                .key = KEY_CONFIG_INPUT_UDP_PORT,
+                .type = CONFIG_ITEM_TYPE_UINT32,
+                .def.int32 = 8023
+        },
+        {
+                .key = KEY_CONFIG_SERIAL_BAUDRATE,
+                .type = CONFIG_ITEM_TYPE_UINT32,
+                .def.uint32 = 115200
+        },
 };
 
 const config_item_t *config_items_get(int *count) {

@@ -70,6 +70,8 @@ static void show_config_board(void)
     ESP_LOGI(TAG, "-------Show configuration------");
     ESP_LOGI(TAG, "board_data.input = %d", board_data.input);
     ESP_LOGI(TAG, "board_data.output = %d", board_data.output);
+    ESP_LOGI(TAG, "board_data.serial_baudrate = %ld", board_data.serial_baudrate);
+    ESP_LOGI(TAG, "board_data.udp_port = %ld", board_data.udp_port);
 
     ESP_LOGI(TAG, "----------------------------------------------------------------");
 }
@@ -96,11 +98,25 @@ static void user_get_data_input(void)
         config_set(CONF_ITEM(KEY_CONFIG_INPUT_PROTO_TYPE), &ui8);
     }
 
-    ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &board_data.port);
-    if (board_data.port == 0)
+    ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &board_data.tcp_port);
+    if (board_data.tcp_port == 0)
+    {
+        ui32 = ESP32_BRIDGE_TCP_PORT;
+        config_set(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &ui32);
+    }
+
+    ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_UDP_PORT), &board_data.tcp_port);
+    if (board_data.udp_port == 0)
     {
         ui32 = ESP32_BRIDGE_UDP_PORT;
-        config_set(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &ui32);
+        config_set(CONF_ITEM(KEY_CONFIG_INPUT_UDP_PORT), &ui32);
+    }
+
+    ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_SERIAL_BAUDRATE), &board_data.serial_baudrate);
+    if (board_data.serial_baudrate == 0)
+    {
+        ui32 = ESP32_SERIAL_DEFAULT_BAUDRATE;
+        config_set(CONF_ITEM(KEY_CONFIG_SERIAL_BAUDRATE), &ui32);
     }
 
     config_get_str_blob_alloc(CONF_ITEM(KEY_CONFIG_INPUT_TCP_IP), (void **)&board_data.ip_addressp);
@@ -110,6 +126,23 @@ static void user_get_data_input(void)
         sprintf(board_data.ip_addressp, "%s", ESP32_Bridge_TCP_IP);
         config_set(CONF_ITEM(KEY_CONFIG_INPUT_TCP_IP), &board_data.ip_addressp);
     }
+
+    config_get_str_blob_alloc(CONF_ITEM(KEY_CONFIG_ADMIN_USERNAME), (void **)&board_data.user_name);
+    if (strcmp(board_data.user_name, "") == 0)
+    {
+        sprintf(board_data.user_name, "%s", ESP32_USER_NAME);
+        config_set(CONF_ITEM(KEY_CONFIG_ADMIN_USERNAME), &board_data.user_name);
+    }
+
+    config_get_str_blob_alloc(CONF_ITEM(KEY_CONFIG_ADMIN_PASSWORD), (void **)&board_data.password);
+    if (strcmp(board_data.password, "") == 0)
+    {
+        sprintf(board_data.password, "%s", ESP32_PASSWORD);
+        config_set(CONF_ITEM(KEY_CONFIG_ADMIN_PASSWORD), &board_data.password);
+    }
+
+    ESP_LOGI(TAG, "config_get_primitive[KEY_CONFIG_ADMIN_USERNAME] = %s", board_data.user_name);
+    ESP_LOGI(TAG, "config_get_primitive[KEY_CONFIG_ADMIN_PASSWORD] = %s", board_data.password);
 }
 
 void app_main()

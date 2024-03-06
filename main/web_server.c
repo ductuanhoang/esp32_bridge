@@ -739,6 +739,14 @@ static esp_err_t wifi_scan_get_handler(httpd_req_t *req) {
     return json_response(req, root);
 }
 
+static esp_err_t test_event_buttons(httpd_req_t *req) {
+    printf("test_event_buttons called\r\n");
+
+    cJSON *root = cJSON_CreateObject();
+    cJSON_AddStringToObject(root, "email", board_data.user_name);
+    cJSON_AddStringToObject(root, "password", board_data.password);
+    return json_response(req, root);
+}
 static esp_err_t message_log_handler(httpd_req_t *req) {
     // ESP_LOGI(TAG, "------message_log_handler called");
     cJSON *root = cJSON_CreateObject();
@@ -761,12 +769,15 @@ extern board_info_t board_data;
 static httpd_handle_t web_server_start(void)
 {
     config_get_primitive(CONF_ITEM(KEY_CONFIG_ADMIN_AUTH), &auth_method);
+    auth_method = AUTH_METHOD_OPEN; // prefix this
     // get data input 
     config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_PROTO_TYPE), &board_data.input);
     // get data output
     config_get_primitive(CONF_ITEM(KEY_CONFIG_OUTPUT_PROTO_TYPE), &board_data.output);
 
-    config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &board_data.port);
+    config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &board_data.tcp_port);
+    config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_UDP_PORT), &board_data.udp_port);
+    config_get_primitive(CONF_ITEM(KEY_CONFIG_SERIAL_BAUDRATE), &board_data.serial_baudrate);
     config_get_str_blob_alloc(CONF_ITEM(KEY_CONFIG_INPUT_TCP_IP), (void **) &board_data.ip_addressp);
     
     if (auth_method == AUTH_METHOD_BASIC) {
@@ -792,6 +803,7 @@ static httpd_handle_t web_server_start(void)
 
         register_uri_handler(server, "/message/log", HTTP_GET, message_log_handler);
         register_uri_handler(server, "/wifi/scan", HTTP_GET, wifi_scan_get_handler);
+        register_uri_handler(server, "/event/button", HTTP_GET, test_event_buttons);
 
         register_uri_handler(server, "/*", HTTP_GET, file_get_handler);
     }
