@@ -156,6 +156,7 @@ void app_main()
     stream_stats_init();
 
     config_init();
+    user_get_data_input();
     uart_init();
     user_get_data_input();
     show_config_board();

@@ -123,11 +123,12 @@ static void uart_number1_init(void)
         .flow_ctrl = flow_ctrl,
     };
     uart_config.parity = UART_PARITY_DISABLE;
+    if (board_data.serial_baudrate != 0)
+        uart_config.baud_rate = board_data.serial_baudrate;
     uart_port_1_baudrate = uart_config.baud_rate;
 
     uart_tx_pin = ESP_UART_TX_PIN;
     uart_rx_pin = ESP_UART_RX_PIN;
-
 
     ESP_LOGE(TAG, "*********** uart_port = %d, uart_tx = %d, uart_rx = %d, baudrate = %d", uart_port_1, uart_tx_pin, uart_rx_pin, uart_config.baud_rate);
     ESP_ERROR_CHECK(uart_param_config(uart_port_1, &uart_config));
