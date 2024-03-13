@@ -26,7 +26,7 @@
 #include <uart.h>
 #include <tasks.h>
 #include "config.h"
-
+#include "device_data.h"
 static const char *TAG = "CONFIG";
 static const char *STORAGE = "config";
 
@@ -42,12 +42,12 @@ const config_item_t CONFIG_ITEMS[] = {
         {
                 .key = KEY_CONFIG_ADMIN_USERNAME,
                 .type = CONFIG_ITEM_TYPE_STRING,
-                .def.str = ""
+                .def.str = ESP32_USER_NAME
         }, {
                 .key = KEY_CONFIG_ADMIN_PASSWORD,
                 .type = CONFIG_ITEM_TYPE_STRING,
                 .secret = true,
-                .def.str = ""
+                .def.str = ESP32_PASSWORD
         },
 
         // Bluetooth
@@ -255,33 +255,33 @@ const config_item_t CONFIG_ITEMS[] = {
         {
                 .key = KEY_CONFIG_INPUT_PROTO_TYPE,
                 .type = CONFIG_ITEM_TYPE_INT8,
-                .def.uint8 = 2 // E_WIRELESS
+                .def.uint8 = E_SERIAL_UART
         },
         //
         {
                 .key = KEY_CONFIG_OUTPUT_PROTO_TYPE,
                 .type = CONFIG_ITEM_TYPE_INT8,
-                .def.uint8 = 1 //E_WIRED
+                .def.uint8 = E_BLUETOOTH
         },
         {
                 .key = KEY_CONFIG_INPUT_TCP_IP,
                 .type = CONFIG_ITEM_TYPE_STRING,
-                .def.str = ""
+                .def.str = ESP32_Bridge_TCP_IP
         },
         {
                 .key = KEY_CONFIG_INPUT_TCP_PORT,
                 .type = CONFIG_ITEM_TYPE_UINT32,
-                .def.int32 = 8023
+                .def.int32 = ESP32_BRIDGE_TCP_PORT
         },
         {
                 .key = KEY_CONFIG_INPUT_UDP_PORT,
                 .type = CONFIG_ITEM_TYPE_UINT32,
-                .def.int32 = 8023
+                .def.int32 = ESP32_BRIDGE_UDP_PORT
         },
         {
                 .key = KEY_CONFIG_SERIAL_BAUDRATE,
                 .type = CONFIG_ITEM_TYPE_UINT32,
-                .def.uint32 = 115200
+                .def.uint32 = KEY_CONFIG_SERIAL_BAUDRATE
         },
 };
 

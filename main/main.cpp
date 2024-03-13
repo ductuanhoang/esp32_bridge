@@ -87,36 +87,36 @@ static void user_get_data_input(void)
     ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_PROTO_TYPE), &board_data.input);
     if (board_data.input == 0)
     {
-        ui8 = E_SERIAL_UART;
-        config_set(CONF_ITEM(KEY_CONFIG_INPUT_PROTO_TYPE), &ui8);
+        board_data.input = E_SERIAL_UART;
+        config_set(CONF_ITEM(KEY_CONFIG_INPUT_PROTO_TYPE), &board_data.input);
     }
 
     ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_OUTPUT_PROTO_TYPE), &board_data.output);
     if (board_data.output == 0)
     {
-        ui8 = E_BLUETOOTH;
-        config_set(CONF_ITEM(KEY_CONFIG_INPUT_PROTO_TYPE), &ui8);
+        board_data.output = E_BLUETOOTH;
+        config_set(CONF_ITEM(KEY_CONFIG_INPUT_PROTO_TYPE), &board_data.output);
     }
 
     ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &board_data.tcp_port);
     if (board_data.tcp_port == 0)
     {
-        ui32 = ESP32_BRIDGE_TCP_PORT;
-        config_set(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &ui32);
+        board_data.tcp_port = ESP32_BRIDGE_TCP_PORT;
+        config_set(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &board_data.tcp_port);
     }
 
     ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_UDP_PORT), &board_data.tcp_port);
     if (board_data.udp_port == 0)
     {
-        ui32 = ESP32_BRIDGE_UDP_PORT;
-        config_set(CONF_ITEM(KEY_CONFIG_INPUT_UDP_PORT), &ui32);
+        board_data.udp_port = ESP32_BRIDGE_UDP_PORT;
+        config_set(CONF_ITEM(KEY_CONFIG_INPUT_UDP_PORT), &board_data.udp_port);
     }
 
     ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_SERIAL_BAUDRATE), &board_data.serial_baudrate);
     if (board_data.serial_baudrate == 0)
     {
-        ui32 = ESP32_SERIAL_DEFAULT_BAUDRATE;
-        config_set(CONF_ITEM(KEY_CONFIG_SERIAL_BAUDRATE), &ui32);
+        board_data.serial_baudrate = ESP32_SERIAL_DEFAULT_BAUDRATE;
+        config_set(CONF_ITEM(KEY_CONFIG_SERIAL_BAUDRATE), &board_data.serial_baudrate);
     }
 
     config_get_str_blob_alloc(CONF_ITEM(KEY_CONFIG_INPUT_TCP_IP), (void **)&board_data.ip_addressp);

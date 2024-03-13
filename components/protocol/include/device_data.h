@@ -51,6 +51,7 @@ extern "C"
         char *password;
         char message[UART_MAX_BUFFER_SIZE+2];
         uint8_t new_event;
+        uint8_t first_time;
     } board_info_t;
 
     typedef struct
