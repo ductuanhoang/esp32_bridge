@@ -37,7 +37,7 @@
 #include <lwip/sockets.h>
 #include "web_server.h"
 #include "device_data.h"
-
+#include "simulation_buffer.h"
 // Max length a file path can have on storage
 #define FILE_PATH_MAX (ESP_VFS_PATH_MAX + CONFIG_SPIFFS_OBJ_NAME_LEN)
 #define FILE_HASH_SUFFIX ".crc"
@@ -747,6 +747,57 @@ static esp_err_t test_event_buttons(httpd_req_t *req) {
     cJSON_AddStringToObject(root, "password", board_data.password);
     return json_response(req, root);
 }
+
+static esp_err_t start_simu_pro_event_buttons(httpd_req_t *req) {
+    printf("start_simu_pro_event_buttons called\r\n");
+    memset(buffer, 0, BUFFER_SIZE);
+    int ret = httpd_req_recv(req, buffer, BUFFER_SIZE - 1);
+    if (ret <= 0) {
+        if (ret == HTTPD_SOCK_ERR_TIMEOUT) {
+            httpd_resp_send_408(req);
+        }
+
+        return ESP_FAIL;
+    }
+
+    buffer[ret] = '\0';
+    cJSON *root = cJSON_Parse(buffer);
+
+    printf("json buffer = %s\r\n", buffer);
+    // Parse the root
+    if (root == NULL) {
+        const char *error_ptr = cJSON_GetErrorPtr();
+        if (error_ptr != NULL) {
+            fprintf(stderr, "Error before: %s\n", error_ptr);
+        }
+        return ESP_FAIL;
+    }
+
+    // Extract the "option" value
+    cJSON *option = cJSON_GetObjectItemCaseSensitive(root, "option");
+    if (cJSON_IsString(option) && (option->valuestring != NULL)) {
+        board_data.simulation_info.protocol = atoi(option->valuestring);
+        printf("simulation_info protocol: %d\n",  board_data.simulation_info.protocol);
+
+    }
+
+    // Extract the "start" value
+    cJSON *start = cJSON_GetObjectItemCaseSensitive(root, "start");
+    if (cJSON_IsBool(start)) {
+        board_data.simulation_info.simulation_start = cJSON_IsTrue(start);
+        printf("simulation_info start: %d\n",  board_data.simulation_info.simulation_start);
+        if( board_data.simulation_info.simulation_start)
+            simulation_func_start();
+        else 
+            simulation_func_stop();
+    }
+    memset(buffer, 0, BUFFER_SIZE);
+    cJSON_Delete(root);
+    root = cJSON_CreateObject();
+    cJSON_AddBoolToObject(root, "success", true);
+    return json_response(req, root);
+}
+
 static esp_err_t message_log_handler(httpd_req_t *req) {
     // ESP_LOGI(TAG, "------message_log_handler called");
     cJSON *root = cJSON_CreateObject();
@@ -804,6 +855,8 @@ static httpd_handle_t web_server_start(void)
         register_uri_handler(server, "/message/log", HTTP_GET, message_log_handler);
         register_uri_handler(server, "/wifi/scan", HTTP_GET, wifi_scan_get_handler);
         register_uri_handler(server, "/event/button", HTTP_GET, test_event_buttons);
+        // register_uri_handler(server, "/event/start_test_mode", HTTP_POST, start_test_mode_event_buttons);
+        register_uri_handler(server, "/event/button_simu_pro", HTTP_POST, start_simu_pro_event_buttons);
 
         register_uri_handler(server, "/*", HTTP_GET, file_get_handler);
     }

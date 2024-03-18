@@ -81,6 +81,7 @@
 #include "Bluetooth.h"
 #include "TCP.h"
 #include "UDP.h"
+#include "simulation.h"
 #define TAG "COMMON_PROTOCOL"
 
 /***********************************************************************************************************************
@@ -326,39 +327,42 @@ static void common_send_task(void *ctx)
         /* code */
         if (xQueueReceive(common_queue, &(user_buffer_common_queue), (TickType_t)(5 / portTICK_PERIOD_MS)))
         {
-            ESP_LOGI(TAG, "number of messages stored in a queue = %d", uxQueueMessagesWaiting(common_queue));
-            ESP_LOGI(TAG, "total heap space available = %d", xPortGetFreeHeapSize());
-            // check buffer
-            ESP_LOGI(TAG, "data received: %s", (uint8_t *)user_buffer_common_queue.buffer);
-            sprintf((char *)board_data.message, "%s\r\n", (char *)user_buffer_common_queue.buffer);
-            board_data.new_event = 1;
-            // receive message and parse it
-            if (board_data.output == E_BLUETOOTH)
+            if( board_data.simulation_info.simulation_start == 0)
             {
-                if (protocol_connection.send_u8 != NULL)
-                    protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
+                ESP_LOGI(TAG, "number of messages stored in a queue = %d", uxQueueMessagesWaiting(common_queue));
+                ESP_LOGI(TAG, "total heap space available = %d", xPortGetFreeHeapSize());
+                // check buffer
+                ESP_LOGI(TAG, "data received: %s", (uint8_t *)user_buffer_common_queue.buffer);
+                sprintf((char *)board_data.message, "%s\r\n", (char *)user_buffer_common_queue.buffer);
+                board_data.new_event = 1;
+                // receive message and parse it
+                if (board_data.output == E_BLUETOOTH)
+                {
+                    if (protocol_connection.send_u8 != NULL)
+                        protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
+                }
+                else if (board_data.output == E_CAN_BUS)
+                {
+                    if (protocol_connection.send_u8 != NULL)
+                        protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
+                }
+                else if (board_data.output == E_SERIAL_UART)
+                {
+                    if (protocol_connection.send_u8 != NULL)
+                        protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
+                }
+                else if (board_data.output == E_UDP)
+                {
+                    if (protocol_connection.send_u8 != NULL)
+                        protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
+                }
+                else if (board_data.output == E_TCP)
+                {
+                    if (protocol_connection.send_u8 != NULL)
+                        protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
+                }
+                free_send_message_report();
             }
-            else if (board_data.output == E_CAN_BUS)
-            {
-                if (protocol_connection.send_u8 != NULL)
-                    protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
-            }
-            else if (board_data.output == E_SERIAL_UART)
-            {
-                if (protocol_connection.send_u8 != NULL)
-                    protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
-            }
-            else if (board_data.output == E_UDP)
-            {
-                if (protocol_connection.send_u8 != NULL)
-                    protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
-            }
-            else if (board_data.output == E_TCP)
-            {
-                if (protocol_connection.send_u8 != NULL)
-                    protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
-            }
-            free_send_message_report();
         }
         else
         {

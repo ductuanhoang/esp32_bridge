@@ -41,6 +41,12 @@ extern "C"
 
     typedef struct
     {
+        e_protocol_type protocol;
+        uint8_t simulation_start;
+    } board_simulator_t;
+
+    typedef struct
+    {
         e_protocol_type input;
         e_protocol_type output;
         char *ip_addressp;
@@ -52,6 +58,7 @@ extern "C"
         char message[UART_MAX_BUFFER_SIZE+2];
         uint8_t new_event;
         uint8_t first_time;
+        board_simulator_t simulation_info;
     } board_info_t;
 
     typedef struct

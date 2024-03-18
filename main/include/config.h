@@ -131,6 +131,9 @@ typedef struct config_item {
 #define KEY_CONFIG_SERIAL_BAUDRATE "serial_baurate"
 // configuration output parameters
 #define KEY_CONFIG_OUTPUT_PROTO_TYPE "out_pro_type"
+// config data of simulated information
+#define KEY_CONFIG_SIMULATION_PROTO_TYPE "simu_pro_type"
+
 
 esp_err_t config_init();
 esp_err_t config_reset();

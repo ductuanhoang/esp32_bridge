@@ -73,6 +73,9 @@ static void show_config_board(void)
     ESP_LOGI(TAG, "board_data.serial_baudrate = %ld", board_data.serial_baudrate);
     ESP_LOGI(TAG, "board_data.udp_port = %ld", board_data.udp_port);
 
+    ESP_LOGI(TAG, "board_data.simulation_info.protocol = %d", board_data.simulation_info.protocol);
+    ESP_LOGI(TAG, "board_data.simulation_info.simulation_start = %d", board_data.simulation_info.simulation_start);
+
     ESP_LOGI(TAG, "----------------------------------------------------------------");
 }
 
@@ -143,6 +146,11 @@ static void user_get_data_input(void)
 
     ESP_LOGI(TAG, "config_get_primitive[KEY_CONFIG_ADMIN_USERNAME] = %s", board_data.user_name);
     ESP_LOGI(TAG, "config_get_primitive[KEY_CONFIG_ADMIN_PASSWORD] = %s", board_data.password);
+
+    // set default simulation settings
+    board_data.simulation_info.protocol = E_BLUETOOTH;
+    board_data.simulation_info.simulation_start = 0;
+    
 }
 
 void app_main()

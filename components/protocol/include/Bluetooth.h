@@ -13,7 +13,6 @@
 #include "ArduinoJson.h"
 #include "esp_system.h"
 #include "esp_log.h"
-#include <map>
 #include "esp_random.h"
 #include "esp_event.h"
 #include "freertos/FreeRTOS.h"
