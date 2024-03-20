@@ -105,7 +105,7 @@ void simulation_start(void)
     {
         ESP_LOGI(TAG, "config output with E_TCP");
         // wait_for_ip();
-       if (board_data.input != E_TCP && board_data.output != E_TCP)
+        if (board_data.input != E_TCP && board_data.output != E_TCP)
             TCP_Init();
         // simulation_connection.send_str = tcp_send;
     }
@@ -122,9 +122,9 @@ void simulation_stop(void)
 
 typedef struct
 {
-    char* buffer;
+    char *buffer;
     uint16_t len;
-}simulation_buffer_t;
+} simulation_buffer_t;
 /***********************************************************************************************************************
  * static functions
  ***********************************************************************************************************************/
@@ -134,8 +134,11 @@ static void simulation_send_task(void *ctx)
     {
         simulation_buffer_t simulation_buffer;
         // snprintf(simulation_buffer.buffer, "%s", "tuan123");
-        simulation_buffer.buffer = "tuan123";
-        simulation_buffer.len = 7;
+        simulation_buffer.buffer = (char *)simulation_data;
+        simulation_buffer.len = sizeof(simulation_data) / sizeof(uint8_t);
+        // update data to view log contents
+        sprintf((char *)board_data.message, "%s\r\n", (char *)simulation_buffer.buffer);
+        board_data.new_event = 1;
         ESP_LOGI(TAG, "simulation_send_task called sends: %s", simulation_buffer.buffer);
         // send simulation data use protocol simulation input
         if (board_data.simulation_info.protocol == E_BLUETOOTH)

@@ -799,7 +799,7 @@ static esp_err_t start_simu_pro_event_buttons(httpd_req_t *req) {
 }
 
 static esp_err_t message_log_handler(httpd_req_t *req) {
-    // ESP_LOGI(TAG, "------message_log_handler called");
+    ESP_LOGI(TAG, "------message_log_handler called");
     cJSON *root = cJSON_CreateObject();
     cJSON_AddStringToObject(root, "message", board_data.message);
     cJSON_AddNumberToObject(root, "new_event", board_data.new_event);

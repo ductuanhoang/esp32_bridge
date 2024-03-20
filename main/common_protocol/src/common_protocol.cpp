@@ -258,6 +258,10 @@ static void common_uart_handler(void *handler_args, esp_event_base_t base, int32
                 user_buffer_common_queue.buffer[i] = ((uint8_t *)buffer)[i];
             }
             xQueueSend(common_queue, (void *)(&user_buffer_common_queue), (TickType_t)0);
+            
+            // clear the buffer data
+            memset( user_buffer_common_queue.buffer, 0x00, sizeof(user_buffer_common_queue.buffer));
+            user_buffer_common_queue.len = 0;
             vTaskResume(xCommonSendHandle);
         }
     }
