@@ -24,6 +24,8 @@
 #define TASK_PRIORITY_TCP 5
 
 static void TCP_Task(void *ctx);
+static int sock;
+static struct sockaddr_in dest_addr;
 
 tcp_messge_call_back_t tcp_messge_call_back;
 static uint8_t rx_buffer[30000];
@@ -40,6 +42,23 @@ void TCPRegisterCallback(tcp_messge_call_back_t callback)
         tcp_messge_call_back = callback;
 }
 
+/**
+ * Sends a TCP message over the network.
+ *
+ * @param message Pointer to the message data.
+ * @param len     Length of the message data.
+ */
+void TCP_Send(uint8_t *message, size_t len)
+{
+    ESP_LOGI(TAG, "TCP_Send called");
+    if (sock < 0)
+    {
+        ESP_LOGE(TAG, "Socket not created");
+        return;
+    }
+    int err = sendto(sock, message, len, 0, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
+}
+
 static void TCP_Task(void *ctx)
 {
     ESP_LOGI(TAG, "TCP_Task called");
@@ -54,14 +73,14 @@ static void TCP_Task(void *ctx)
     while (1)
     {
         ESP_LOGI(TAG, "connect to ip %s and port %ld", board_data.ip_addressp, board_data.tcp_port);
-        struct sockaddr_in dest_addr;
+
         dest_addr.sin_addr.s_addr = inet_addr(board_data.ip_addressp);
         dest_addr.sin_family = AF_INET;
         dest_addr.sin_port = htons(board_data.tcp_port);
         addr_family = AF_INET;
         ip_protocol = IPPROTO_IP;
 
-        int sock = socket(addr_family, SOCK_STREAM, ip_protocol);
+        sock = socket(addr_family, SOCK_STREAM, ip_protocol);
         if (sock < 0)
         {
             ESP_LOGE(TAG, "Unable to create socket: errno %d", errno);

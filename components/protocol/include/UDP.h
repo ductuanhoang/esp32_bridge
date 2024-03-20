@@ -34,3 +34,11 @@ void UDP_Init(void);
 
 
 void UDPRegisterCallback(udp_messge_call_back_t callback);
+
+/**
+ * Sends a UDP message.
+ *
+ * @param message The pointer to the message to be sent.
+ * @param len The length of the message.
+ */
+void UDP_Send(uint8_t *message, size_t len);

@@ -34,3 +34,11 @@ void TCP_Init(void);
 
 
 void TCPRegisterCallback(tcp_messge_call_back_t callback);
+
+/**
+ * Sends a TCP message over the network.
+ *
+ * @param message Pointer to the message data.
+ * @param len     Length of the message data.
+ */
+void TCP_Send(uint8_t *message, size_t len);

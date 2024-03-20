@@ -96,9 +96,9 @@
         .debug-message {
             margin-top: 20px;
             padding: 20px;
-            width: 100vw;
+            width: 60vw;
             /* 100% of the viewport width */
-            height: 100vh;
+            height: 80vh;
             /* 100% of the viewport height */
             overflow-y: scroll;
             /* Add a vertical scrollbar */
@@ -211,6 +211,7 @@
                     <span class="slider round"></span>
                 </label>
             </div>
+            <button id="clear_data_content" style="width: 30vw; margin-top: 20px;">Clear Data</button>
             <div class="debug-message" id="debugMessage">
             </div>
         </div>
@@ -274,6 +275,7 @@
             document.getElementById("dashboard").onclick = function () { navigateToDashboard(); };
             document.getElementById("settings").onclick = function () { navigateToSettings(); };
             document.getElementById("test_mode").onclick = function () { navigateToTestMode(); };
+            document.getElementById("clear_data_content").onclick = function () { navigateToClearData(); };
             // document.getElementById("button_publish").onclick = function () { navigateSelectProtocol(); };
 
             var buttons = document.querySelectorAll(".menu-bar button");
@@ -294,6 +296,10 @@
 
         function navigateToTestMode() {
             window.location.href = "test_mode.html";
+        }
+
+        function navigateToClearData() {
+            document.getElementById("debugMessage").innerText = ""
         }
 
         function printDebugMessage(protocol) {

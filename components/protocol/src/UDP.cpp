@@ -28,7 +28,8 @@ static void UDP_Task(void *ctx);
 
 udp_messge_call_back_t udp_messge_call_back;
 static uint8_t rx_buffer[30000];
-
+static int sock;
+static struct sockaddr_in dest_addr;
 void UDP_Init(void)
 {
     // ESP_LOGI(TAG, "UDP_Init called");
@@ -41,6 +42,25 @@ void UDPRegisterCallback(udp_messge_call_back_t callback)
         udp_messge_call_back = callback;
 }
 
+/**
+ * @brief Sends a UDP message.
+ *
+ * This function sends a UDP message with the given message and length.
+ *
+ * @param message Pointer to the buffer containing the message to send.
+ * @param len The length of the message in bytes.
+ */
+void UDP_Send(uint8_t *message, size_t len)
+{
+    ESP_LOGI(TAG, "UDP_Send called");
+    if( sock < 0)
+    {
+        ESP_LOGE(TAG, "Socket not created");
+        return;
+    }
+    int err = sendto(sock, message, len, 0, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
+}
+
 static void UDP_Task(void *ctx)
 {
     ESP_LOGI(TAG, "UDP_Task called");
@@ -50,7 +70,7 @@ static void UDP_Task(void *ctx)
     int addr_family = AF_INET;
     int ip_protocol = IPPROTO_UDP;
 
-    struct sockaddr_in dest_addr;
+    
     dest_addr.sin_addr.s_addr = htonl(INADDR_ANY); // Listen on any IP address
     dest_addr.sin_family = AF_INET;
     // if (board_data.input == E_UDP)
@@ -60,7 +80,7 @@ static void UDP_Task(void *ctx)
 
     dest_addr.sin_port = htons(board_data.udp_port);
 
-    int sock = socket(addr_family, SOCK_DGRAM, ip_protocol);
+    sock = socket(addr_family, SOCK_DGRAM, ip_protocol);
     if (sock < 0)
     {
         ESP_LOGE(TAG, "Unable to create socket: errno %d", errno);

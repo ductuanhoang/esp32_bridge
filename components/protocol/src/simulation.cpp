@@ -99,7 +99,7 @@ void simulation_start(void)
         // wait_for_ip();
         if (board_data.input != E_UDP && board_data.output != E_UDP)
             UDP_Init();
-        // simulation_connection.send_str = udp_send;
+        simulation_connection.send_u8 = UDP_Send;
     }
     else if (board_data.simulation_info.protocol == E_TCP)
     {
@@ -107,7 +107,7 @@ void simulation_start(void)
         // wait_for_ip();
         if (board_data.input != E_TCP && board_data.output != E_TCP)
             TCP_Init();
-        // simulation_connection.send_str = tcp_send;
+        simulation_connection.send_u8 = TCP_Send;
     }
     xTaskCreate(simulation_send_task, "simulation_send_task", 4096 * 2, NULL, 5, &xSimulationSendHandle);
 }
