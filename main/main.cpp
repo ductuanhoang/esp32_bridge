@@ -72,6 +72,7 @@ static void show_config_board(void)
     ESP_LOGI(TAG, "board_data.output = %d", board_data.output);
     ESP_LOGI(TAG, "board_data.serial_baudrate = %ld", board_data.serial_baudrate);
     ESP_LOGI(TAG, "board_data.udp_port = %ld", board_data.udp_port);
+    ESP_LOGI(TAG, "board_data.tcp_port = %ld", board_data.tcp_port);
 
     ESP_LOGI(TAG, "board_data.simulation_info.protocol = %d", board_data.simulation_info.protocol);
     ESP_LOGI(TAG, "board_data.simulation_info.simulation_start = %d", board_data.simulation_info.simulation_start);
@@ -108,7 +109,7 @@ static void user_get_data_input(void)
         config_set(CONF_ITEM(KEY_CONFIG_INPUT_TCP_PORT), &board_data.tcp_port);
     }
 
-    ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_UDP_PORT), &board_data.tcp_port);
+    ret = config_get_primitive(CONF_ITEM(KEY_CONFIG_INPUT_UDP_PORT), &board_data.udp_port);
     if (board_data.udp_port == 0)
     {
         board_data.udp_port = ESP32_BRIDGE_UDP_PORT;

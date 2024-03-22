@@ -951,15 +951,26 @@
                                             <label style="color:green"><b>TCP IP</b></label>
                                             <input type="text" name="in_tcp_ip" id="input-tcp-ip"
                                                 class="wifi-networks-ssid form-control">
-                                            <label style="color:green"><b>TCP Port</b></label>
-                                            <input type="text" name="in_tcp_port" id="input-tcp-port"
-                                                class="wifi-networks-ssid form-control">
-                                            <label style="color:green"><b>UDP Port</b></label>
-                                            <input type="text" name="in_udp_port" id="input-udp-port"
-                                                class="wifi-networks-ssid form-control">
+
+                                                
+                                            <label href="javascript:void(0)" style="color:green" id="input-tcp-portt"
+                                                for="protocol"><b>TCP Port:</b></label>
+                                            <div>
+                                                <input type="number" name="in_tcp_port" id="in_tcp_port" value="8023"
+                                                    maxlength="5" min="0" max="65535" class="form-control" required>
+                                            </div>
+
+                                            <label href="javascript:void(0)" style="color:green" id="input-udp-port"
+                                                for="protocol"><b>UDP Port:</b></label>
+                                            <div>
+                                                <input type="number" name="in_udp_port" id="in_udp_port" value="8023"
+                                                    maxlength="5" min="0" max="65535" class="form-control" required>
+                                            </div>
+
                                             <div class="protocol-name-list">
                                                 <label for="protocol">Serial input/output baudrate:</label>
-                                                <select name="serial_baurate" id="serial-baudrate" class="custom-select">
+                                                <select name="serial_baurate" id="serial-baudrate"
+                                                    class="custom-select">
                                                     <option value="110" selected>110</option>
                                                     <option value="300">300</option>
                                                     <option value="600">600</option>

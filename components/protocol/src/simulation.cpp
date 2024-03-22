@@ -33,6 +33,7 @@
 #include "Bluetooth.h"
 #include "TCP.h"
 #include "UDP.h"
+#include "TCP_Server.h"
 /***********************************************************************************************************************
  * Macro definitions
  ***********************************************************************************************************************/
@@ -106,17 +107,28 @@ void simulation_start(void)
         ESP_LOGI(TAG, "config output with E_TCP");
         // wait_for_ip();
         if (board_data.input != E_TCP && board_data.output != E_TCP)
-            TCP_Init();
-        simulation_connection.send_u8 = TCP_Send;
+            // TCP_Init();
+            TCP_Server_Init();
+        simulation_connection.send_u8 = TCP_Server_Send;
     }
     xTaskCreate(simulation_send_task, "simulation_send_task", 4096 * 2, NULL, 5, &xSimulationSendHandle);
 }
 
 void simulation_stop(void)
 {
+    ESP_LOGI(TAG, "simulation_stop called");
     if (xSimulationSendHandle != NULL)
     {
+        ESP_LOGI(TAG, "simulation_stop called 1");
         vTaskDelete(xSimulationSendHandle);
+        xSimulationSendHandle = NULL;
+        if (board_data.simulation_info.protocol == E_TCP)
+        {
+            ESP_LOGI(TAG, "simulation_stop called 2");
+            /* code */
+            TCP_Server_Destroy();
+        }
+
     }
 }
 

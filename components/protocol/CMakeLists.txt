@@ -7,6 +7,7 @@ message(CMAKE_CURRENT_LIST_DIR="${CMAKE_CURRENT_LIST_DIR}")
 set(USER_MESSAGE
     ${CMAKE_CURRENT_LIST_DIR}/src/UDP.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/TCP.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/src/TCP_Server.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/gatt_svr.c
     ${CMAKE_CURRENT_LIST_DIR}/src/Bluetooth.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/simulation.cpp
