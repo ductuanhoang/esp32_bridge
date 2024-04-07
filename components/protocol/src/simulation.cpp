@@ -34,6 +34,7 @@
 #include "TCP.h"
 #include "UDP.h"
 #include "TCP_Server.h"
+#include "UDP_Server.h"
 /***********************************************************************************************************************
  * Macro definitions
  ***********************************************************************************************************************/
@@ -99,8 +100,8 @@ void simulation_start(void)
         ESP_LOGI(TAG, "config output with E_UDP");
         // wait_for_ip();
         if (board_data.input != E_UDP && board_data.output != E_UDP)
-            UDP_Init();
-        simulation_connection.send_u8 = UDP_Send;
+            UDP_Server_Init();
+        simulation_connection.send_u8 = UDP_Server_Send;
     }
     else if (board_data.simulation_info.protocol == E_TCP)
     {
@@ -127,6 +128,11 @@ void simulation_stop(void)
             ESP_LOGI(TAG, "simulation_stop called 2");
             /* code */
             TCP_Server_Destroy();
+        }
+        else if (board_data.simulation_info.protocol == E_UDP)
+        {
+             ESP_LOGI(TAG, "simulation_stop called 2");
+            UDP_Server_Destroy();
         }
 
     }

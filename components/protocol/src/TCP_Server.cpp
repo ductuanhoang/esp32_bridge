@@ -28,7 +28,6 @@
 
 #define TASK_PRIORITY_TCP_SEVER 5
 
-#define TCP_SERVER_PORT 3333
 #define TCP_SERVER_CONFIG_EXAMPLE_KEEPALIVE_IDLE 5
 #define TCP_SERVER_CONFIG_EXAMPLE_KEEPALIVE_INTERVAL 5
 #define TCP_SERVER_CONFIG_EXAMPLE_KEEPALIVE_COUNT 3
@@ -139,7 +138,7 @@ static void TCP_Server_Task(void *ctx)
         struct sockaddr_in *dest_addr_ip4 = (struct sockaddr_in *)&dest_addr;
         dest_addr_ip4->sin_addr.s_addr = htonl(INADDR_ANY);
         dest_addr_ip4->sin_family = AF_INET;
-        dest_addr_ip4->sin_port = htons(board_data.tcp_port);
+        dest_addr_ip4->sin_port = htons(ESP32_BRIDGE_TCP_TEST_PORT);
         ip_protocol = IPPROTO_IP;
 
         listen_sock = socket(addr_family, SOCK_STREAM, ip_protocol);
@@ -163,7 +162,7 @@ static void TCP_Server_Task(void *ctx)
             ESP_LOGE(TAG, "IPPROTO: %d", addr_family);
             goto CLEAN_UP;
         }
-        ESP_LOGI(TAG, "Socket bound, port %ld", board_data.tcp_port);
+        ESP_LOGI(TAG, "Socket bound, port %d", ESP32_BRIDGE_TCP_TEST_PORT);
 
         err = listen(listen_sock, 1);
         if (err != 0)
