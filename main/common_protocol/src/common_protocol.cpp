@@ -125,6 +125,7 @@ static void free_send_message_report(void);
 static void common_uart_handler(void *handler_args, esp_event_base_t base, int32_t length, void *buffer);
 static void protocol_udp_tcp_handler(uint8_t *buffer, int32_t length);
 static void common_uart_send(uint8_t *message, size_t len);
+static void common_uart_usb_send(uint8_t *message, size_t len);
 
 static protocol_connection_t protocol_connection;
 static user_common_queue_t user_buffer_common_queue;
@@ -165,6 +166,12 @@ void common_protocol_init(void)
         ESP_LOGI(TAG, "config input with E_SERIAL_UART");
         uart_register_read_handler(common_uart_handler);
     }
+    else if (board_data.input == E_SERIAL_UART_USB)
+    {
+        protocol_uart_enabled = 1;
+        ESP_LOGI(TAG, "config input with E_SERIAL_UART_USB");
+        uart_register_read_handler(common_uart_handler);
+    }
     else if (board_data.input == E_BLUETOOTH)
     {
         protocol_bluetooth_enabled = 1;
@@ -199,6 +206,12 @@ void common_protocol_init(void)
         ESP_LOGI(TAG, "config output with E_SERIAL_UART");
         protocol_connection.send_u8 = common_uart_send;
     }
+    else if (board_data.output == E_SERIAL_UART_USB)
+    {
+        ESP_LOGI(TAG, "config output with E_SERIAL_UART_USB");
+        protocol_connection.send_u8 = common_uart_usb_send;
+    }
+    else
     if (board_data.output == E_BLUETOOTH)
     {
         ESP_LOGI(TAG, "config output with E_BLUETOOTH");
@@ -246,7 +259,7 @@ static void common_uart_handler(void *handler_args, esp_event_base_t base, int32
 {
     // ESP_LOGI(TAG, "board_data.input.protocol_name = %d", board_data.input.protocol_name);
     stream_stats_increment(common_stream_stats, 0, length);
-    if (board_data.input == E_SERIAL_UART)
+    if ((board_data.input == E_SERIAL_UART) || (board_data.input == E_SERIAL_UART_USB))
     {
         ESP_LOGI(TAG, "recieved with len = %ld", length);
         // int ret = device_manager_check_package((const char *)buffer, length);
@@ -356,6 +369,11 @@ static void common_send_task(void *ctx)
                     if (protocol_connection.send_u8 != NULL)
                         protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
                 }
+                else if (board_data.output == E_SERIAL_UART_USB)
+                {
+                    if (protocol_connection.send_u8 != NULL)
+                        protocol_connection.send_u8((uint8_t *)user_buffer_common_queue.buffer, (uint16_t)user_buffer_common_queue.len);
+                }
                 else if (board_data.output == E_UDP)
                 {
                     if (protocol_connection.send_u8 != NULL)
@@ -395,6 +413,21 @@ static void common_uart_send(uint8_t *message, size_t len)
     uart_write_bytes(UART_NUM_1, message, len);
 }
 
+
+/**
+ * @brief Sends a message over UART to USB.
+ *
+ * This function sends a message over UART to USB. The message is passed as a pointer to a buffer
+ * and its length is specified by the `len` parameter.
+ *
+ * @param message Pointer to the message buffer.
+ * @param len Length of the message in bytes.
+ */
+static void common_uart_usb_send(uint8_t *message, size_t len)
+{
+    // ESP_LOG_BUFFER_HEXDUMP(TAG, (const char *)message, len, ESP_LOG_INFO);
+    uart_write_bytes(UART_NUM_0, message, len);
+}
 /***********************************************************************************************************************
  * End of file
  ***********************************************************************************************************************/

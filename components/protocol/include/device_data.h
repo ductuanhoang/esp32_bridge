@@ -39,7 +39,8 @@ extern "C"
         E_UDP,
         E_TCP,
         E_SERIAL_UART,
-        E_CAN_BUS
+        E_CAN_BUS,
+        E_SERIAL_UART_USB,
     } e_protocol_type;
 
     typedef struct

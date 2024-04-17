@@ -52,8 +52,13 @@ static void uart_task(void *ctx);
 
 void uart_init()
 {
-    // uart_number0_init();
-    uart_number1_init();
+    if ((board_data.input == E_SERIAL_UART))
+        uart_number1_init();
+    else if (board_data.input == E_SERIAL_UART_USB)
+        uart_number0_init();
+    else
+        return;
+
     stream_stats = stream_stats_new("uart");
 
     xTaskCreate(uart_task, "uart_task", 8192, NULL, TASK_PRIORITY_UART, NULL);
@@ -73,6 +78,9 @@ static void uart_number0_init(void)
         .stop_bits = UART_STOP_BITS_1,
         .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,
     };
+    if (board_data.serial_baudrate != 0)
+        uart0_config.baud_rate = board_data.serial_baudrate;
+
     // Configure UART parameters
     ESP_ERROR_CHECK(uart_param_config(uart_num, &uart0_config));
     ESP_ERROR_CHECK(uart_set_pin(
@@ -208,7 +216,11 @@ static void uart_task(void *ctx)
 
     while (true)
     {
-        int32_t len = uart_read_bytes(uart_port_1, buffer, sizeof(buffer), 20 / portTICK_PERIOD_MS);
+        int32_t len = 0;
+        if ((board_data.input == E_SERIAL_UART))
+            len = uart_read_bytes(uart_port_1, buffer, sizeof(buffer), 20 / portTICK_PERIOD_MS);
+        else if (board_data.input == E_SERIAL_UART_USB)
+            len = uart_read_bytes(UART_NUM_0, buffer, sizeof(buffer), 20 / portTICK_PERIOD_MS);
 
         if (len < 0)
         {
