@@ -76,10 +76,37 @@ void UDP_ServerRegisterCallback(udp_server_messge_call_back_t callback)
  */
 void UDP_Server_Send(uint8_t *message, size_t len)
 {
-    int err = sendto(sock, message, len, 0, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
-    if (err < 0)
+    char message_buffer[1024] = {0}; // Adjust buffer size as needed
+    size_t buffer_index = 0;
+
+    // Loop until the end of simulation_data
+    while (*message != '\0')
     {
-        ESP_LOGE(TAG, "Error occurred during sending: errno %d", errno);
+        // Find the end of the current line
+        uint8_t *end_ptr = message;
+        while (*end_ptr != '\r' && *end_ptr != '\0')
+        {
+            end_ptr++;
+        }
+
+        // Calculate the length of the current line
+        int length = (int)(end_ptr - message);
+
+        // Copy the current line to the message buffer
+        memcpy(&message_buffer[buffer_index], message, length);
+        buffer_index += length;
+
+        // Copy end-of-line characters to the message buffer
+        message_buffer[buffer_index++] = '\r';
+        message_buffer[buffer_index++] = '\n';
+        int err = sendto(sock, message, len, 0, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
+        if (err < 0)
+        {
+            ESP_LOGE(TAG, "Error occurred during sending: errno %d", errno);
+        }
+
+        // Move message to the next line (skipping '\r\n' characters)
+        message = (*end_ptr == '\r') ? (end_ptr + 2) : end_ptr;
     }
 }
 

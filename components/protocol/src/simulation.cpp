@@ -131,10 +131,9 @@ void simulation_stop(void)
         }
         else if (board_data.simulation_info.protocol == E_UDP)
         {
-             ESP_LOGI(TAG, "simulation_stop called 2");
+            ESP_LOGI(TAG, "simulation_stop called 2");
             UDP_Server_Destroy();
         }
-
     }
 }
 
@@ -197,7 +196,37 @@ static void simulation_send_task(void *ctx)
 static void simulation_uart_send(uint8_t *message, size_t len)
 {
     // ESP_LOG_BUFFER_HEXDUMP(TAG, (const char *)message, len, ESP_LOG_INFO);
-    uart_write_bytes(UART_NUM_1, message, len);
+    // Iterate over each character in the simulation_data
+    // Loop until the end of simulation_data
+    // Accumulate the entire message along with end-of-line characters
+    char message_buffer[1024] = {0}; // Adjust buffer size as needed
+    size_t buffer_index = 0;
+
+    // Loop until the end of simulation_data
+    while (*message != '\0')
+    {
+        // Find the end of the current line
+        uint8_t *end_ptr = message;
+        while (*end_ptr != '\r' && *end_ptr != '\0')
+        {
+            end_ptr++;
+        }
+
+        // Calculate the length of the current line
+        int length = (int)(end_ptr - message);
+
+        // Copy the current line to the message buffer
+        memcpy(&message_buffer[buffer_index], message, length);
+        buffer_index += length;
+
+        // Copy end-of-line characters to the message buffer
+        message_buffer[buffer_index++] = '\r';
+        message_buffer[buffer_index++] = '\n';
+        uart_write_bytes(UART_NUM_1, message_buffer, buffer_index);
+
+        // Move message to the next line (skipping '\r\n' characters)
+        message = (*end_ptr == '\r') ? (end_ptr + 2) : end_ptr;
+    }
 }
 /***********************************************************************************************************************
  * End of file
